@@ -16,17 +16,17 @@ public class Juego {
         // Baraja baraja = new Baraja();
         // System.out.println(baraja);
 
-        // //Prueba de creacion de mesa inicial + modificaciones en la mesa
-        // Baraja baraja = new Baraja();
-        // Mesa mesa = new Mesa();
-        // mesa.colocarMesaInicial(baraja);
-        // System.out.println(mesa);
-        // List<Carta> cartas = new LinkedList<>();
-        // cartas.add(new Carta("Curruca de caña",6, 9));
-        // cartas.add(new Carta("Curruca de caña",6, 9));
-        // cartas.add(new Carta("Curruca de caña",6, 9));
-        // mesa.insertar(cartas, 3, false,baraja);
-        // System.out.println(mesa);
+        //Prueba de creacion de mesa inicial + modificaciones en la mesa
+        Baraja baraja = new Baraja();
+        Mesa mesa = new Mesa();
+        mesa.colocarMesaInicial(baraja);
+        System.out.println(mesa);
+        List<Carta> cartas = new LinkedList<>();
+        cartas.add(new Carta("Curruca de caña",6, 9));
+        cartas.add(new Carta("Curruca de caña",6, 9));
+        cartas.add(new Carta("Curruca de caña",6, 9));
+        mesa.insertar(cartas, 3, false,baraja);
+        System.out.println(mesa);
 
         // Se crea la baraja
 

@@ -16,6 +16,13 @@ import java.util.List;
 
 public class Jugador {
 
+    private ZonaJuego zonaJuego;
+    private Mano mano;
+
+    public Jugador(Baraja b){
+        zonaJuego = new ZonaJuego();
+        mano = new Mano(b);
+    }
       
     /*
     * Esta clase representa la zona de juego de un jugador. Tendrá las siguientes funcionalidades

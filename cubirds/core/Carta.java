@@ -7,14 +7,14 @@ package es.uvigo.esei.cubirds.core;
 import java.util.List;
 
 public class Carta {
-    public static final String C1_ESPECIE = "Curruca de caña";
-    public static final String C2_ESPECIE = "Flamenco";
-    public static final String C3_ESPECIE = "Petirrojo";
-    public static final String C4_ESPECIE = "Tucán";
-    public static final String C5_ESPECIE = "Pato";
-    public static final String C6_ESPECIE = "Urraca";
-    public static final String C7_ESPECIE = "Lechuza";
-    public static final String C8_ESPECIE = "Guacamayo";
+    // public static final String C1_ESPECIE = "Curruca de caña";
+    // public static final String C2_ESPECIE = "Flamenco";
+    // public static final String C3_ESPECIE = "Petirrojo";
+    // public static final String C4_ESPECIE = "Tucán";
+    // public static final String C5_ESPECIE = "Pato";
+    // public static final String C6_ESPECIE = "Urraca";
+    // public static final String C7_ESPECIE = "Lechuza";
+    // public static final String C8_ESPECIE = "Guacamayo";
 
     private String especie;
     private int bandadaP;

@@ -13,6 +13,7 @@ package es.uvigo.esei.cubirds.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.LinkedList;
 
 public class Jugador {
 

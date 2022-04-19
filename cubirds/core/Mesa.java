@@ -36,8 +36,8 @@ public class Mesa {
         }
     }
 
-    public void insertar(List<Carta> carta, int fila, boolean extremo, Baraja baraja, Jugador j) {
-        j.meterCartas(cartasRodeadas(carta.get(0), fila, extremo));
+    public void insertar(List<Carta> carta, int fila, boolean extremo, Baraja baraja) {
+        cartasRodeadas(carta.get(0), fila, extremo);
         if (extremo) {
             mesa[fila].addAll(carta);
         } else {

@@ -24,6 +24,9 @@ public class Mesa {
         }
     }
 
+    /**
+     * Coloca la mesa inicial cumpliendo las restricciones
+     */
     public void colocarMesaInicial(Baraja baraja) {
         for (int i = 0; i < MAX_FILAS; i++) {
             while (mesa[i].size() < 3) {
@@ -36,7 +39,14 @@ public class Mesa {
             }
         }
     }
-
+/**
+ * 
+ * @param carta Lista de cartas a insertar
+ * @param fila Numero de la fila en la que se va a insertar, de 0 a 3
+ * @param extremo Extremo por el que se va a insertar, true para derecha y false para izquierda
+ * @param baraja 
+ * @return Devuelve las cartas rodeadas al introducir
+ */
     public List<Carta> insertar(List<Carta> carta, int fila, boolean extremo, Baraja baraja) {
         List<Carta> toRet = cartasRodeadas(carta.get(0), fila, extremo);
         if (extremo) {
@@ -47,7 +57,13 @@ public class Mesa {
         rellenar(baraja, fila);
         return toRet;
     }
-
+/**
+ * 
+ * @param carta
+ * @param fila
+ * @param extremo
+ * @return Devuelve las cartas que se encuentran entre una carta y la más proxima de esa especie por el correspondiente extremo
+ */
     public List<Carta> cartasRodeadas(Carta carta, int fila, boolean extremo) {
         List<Carta> toRet = new LinkedList<>();
         if (Mesa.contieneCarta(carta, mesa[fila])) {
@@ -68,7 +84,14 @@ public class Mesa {
         return toRet;
     }
 
-    public booelan rellenar(Baraja baraja, int fila) {
+    /**
+     * 
+     * @param baraja
+     * @param fila La fila que se va a rellenar, si es necesario
+     * @return Devuelve true si se ha rellenado la fila, false en caso contrario, de modo que se puede usar para 
+     * acabar la partida si no puede rellenarse la fila
+     */
+    public boolean rellenar(Baraja baraja, int fila) {
         boolean rellenar = true;
         for (int i = 0; i < mesa[fila].size() - 1; i++) {
             if (!mesa[fila].get(i).sonIguales(mesa[fila].get(i + 1)))
@@ -97,7 +120,7 @@ public class Mesa {
         }
         return sb.toString();
     }
-
+//Esto deberia de cambiarse a carta creo yo
     public static boolean contieneCarta(Carta carta, List<Carta> lista) {
         boolean toRet = false;
         for (Carta c : lista) {

@@ -78,6 +78,11 @@ public class Baraja {
     public void insertarCarta(Carta carta){
         baraja.add(carta);
     }
+
+    public int size(){
+        return baraja.size();
+    }
+
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();

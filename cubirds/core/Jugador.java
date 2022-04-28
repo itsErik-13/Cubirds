@@ -298,8 +298,7 @@ public class Jugador {
 
             for (Carta carta : mano) {
                 for (int i = 0; i < Carta.especies.length; i++) {
-                    if (carta.getEspecie().equals(Carta.especies[i])
-                            && Jugador.numCartasEspecie(carta, mano) >= Carta.bandadasP[i])
+                    if (Jugador.numCartasEspecie(carta, mano) >= carta.getBandadaP())
                         toRet = true;
                 }
             }

@@ -110,7 +110,6 @@ public class Mesa {
                     baraja.insertarCarta(cartaIntroducir);
                 } else {
                     mesa[fila].add(cartaIntroducir);
-                    System.out.println("Fila " + fila + " rellenada");
                     rellenar = false;
                 }
             }

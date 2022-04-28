@@ -134,7 +134,7 @@ public class Jugador {
                 repite = true;
                 fila = pideNumero("\nIntroduce una fila(1...4)");
             } catch (NumberFormatException e) {
-                System.err.println("Introduce un entero, cabezon");
+                System.err.println("Introduce un entero");
                 repite = false;
             }
             if (fila < 1 || fila > 4) {

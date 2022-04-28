@@ -4,7 +4,7 @@
  * - Añadir y eliminar cartas de la mano
  * - Colocar cartas en la mesa
  * - Colocar cartas en su zona de juego
- * - Número de cartas en la mano
+ * - Número decartas en la mano
  * - Número de cartas en la zona de juego
  * - Número de especies distintas en la zona de juego
  * - Mostrar mano, zona de juego del jugador
@@ -125,38 +125,6 @@ public class Jugador {
      *         Mete una carta en la zona de juego
      *
      * @param a
-     */
-    /*
-     * public void colocarZona(String a) {
-     * switch (a) {
-     * case "[Flamenco]":
-     * zonaJuego.meterCarta(new Carta("[Flamenco]", 2, 3));
-     * break;
-     * case "[Lechuza]":
-     * zonaJuego.meterCarta(new Carta("[Lechuza]", 3, 4));
-     * break;
-     * case "[Tucan]":
-     * zonaJuego.meterCarta(new Carta("[Tucan]", 3, 4));
-     * break;
-     * case "[Guacamayo]":
-     * zonaJuego.meterCarta(new Carta("[Guacamayo]", 4, 6));
-     * break;
-     * case "[Pato]":
-     * zonaJuego.meterCarta(new Carta("[Pato]", 4, 6));
-     * break;
-     * case "[Urraca]":
-     * zonaJuego.meterCarta(new Carta("[Urraca]", 5, 7));
-     * break;
-     * case "[Curruca de caña]":
-     * zonaJuego.meterCarta(new Carta("[Curruca de caña]", 6, 9));
-     * break;
-     * case "[Petirrojo]":
-     * zonaJuego.meterCarta(new Carta("[Petirrojo]", 6, 9));
-     * break;
-     * default:
-     * break;
-     * }
-     * }
      */
     /**
      * @author ivanr

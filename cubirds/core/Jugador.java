@@ -359,6 +359,15 @@ public class Jugador {
         public int getNumCartas() {
             return conjuntoCarta.size();
         }
+<<<<<<< HEAD
+        
+        @Override
+        public String toString()
+        {
+            StringBuilder sb = new StringBuilder();
+            for(Carta i: conjuntoCarta){
+                sb.append(i);
+=======
 
         public int getNumCartasDistintas() {
             return getCartasDistintas().size();
@@ -370,6 +379,7 @@ public class Jugador {
                 if (!toRet.contains(carta)) {
                     toRet.add(carta);
                 }
+>>>>>>> 41f19fbbc27200f504441c0312384014f932faac
             }
             return toRet;
         }
@@ -395,11 +405,7 @@ public class Jugador {
         private List<Carta> mano;
 
         public Mano(Baraja b) {
-            mano = new ArrayList<>(8);
-
-            for (Carta i : mano) {
-                mano.add(mano.size(), b.sacarCarta());
-            }
+            mano = new ArrayList<>();
 
         }
 

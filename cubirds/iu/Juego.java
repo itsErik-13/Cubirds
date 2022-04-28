@@ -38,17 +38,18 @@ public class Juego {
             Jugador actual = jugadores[turno];
             System.out.println(actual);
             List<Carta> toAdd = actual.colocarMesa(baraja, mesa);
+            System.out.println(toAdd);
             if(toAdd.size() == 0){
-
+                //Preguntar si coger 2 cartas
             }else{
                 actual.meterCartasMano(toAdd);
             }
             if(actual.numCartasMano() == 0){
-
+                
             }
             System.out.println(actual);
             if(!mesa.rellenar(baraja)){
-            
+                
             }
             ganador = true;
         }

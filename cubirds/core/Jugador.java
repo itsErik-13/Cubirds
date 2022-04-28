@@ -110,9 +110,9 @@ public class Jugador {
         Carta carta = leerEspecie();
 
         int fila = leerFila();
-       
+
         boolean extremo = leerExtremo();
-    
+
         return m.insertar(mano.eliminarCartas(carta), fila, extremo);
     }
 
@@ -295,22 +295,34 @@ public class Jugador {
 
         public boolean bandadaPequenha() {
             boolean toRet = false;
+
+            for (Carta carta : mano) {
+                for (int i = 0; i < Carta.especies.length; i++) {
+                    if (carta.getEspecie().equals(Carta.especies[i])
+                            && Jugador.numCartasEspecie(carta, mano) >= Carta.bandadasP[i])
+                        toRet = true;
+                }
+            }
+
             /*
+             * List<Carta> a = new LinkedList<>();
              * for (Carta carta : mano) {
-             * for (int i = 0; i < Carta.especies.length; i++) {
-             * if (carta.getEspecie().equals(Carta.especies[i])
-             * && Jugador.numCartasEspecie(carta, mano) >= Carta.bandadasP[i])
-             * toRet = true;
+             * if (!a.contains(carta) && Jugador.numCartasEspecie(carta, mano) >=
+             * carta.getBandadaP())
+             * a.add(carta);
              * }
-             * }
-             */
+             **/
+            return toRet;
+        }
+
+        public List<Carta> posibilidadesBandadas() {
             List<Carta> a = new LinkedList<>();
             for (Carta carta : mano) {
                 if (!a.contains(carta) && Jugador.numCartasEspecie(carta, mano) >= carta.getBandadaP())
                     a.add(carta);
             }
 
-            return toRet;
+            return a;
         }
 
         @Override

@@ -17,8 +17,10 @@ import java.util.LinkedList;
 
 public class Jugador {
 
+
+
     private Mano mano;
-    //private ZonaJuego zonaJuego;
+    private ZonaJuego zonaJuego;
 
     /**
      * @author ivanr
@@ -29,7 +31,7 @@ public class Jugador {
      */
     public Jugador(Baraja b) {
         this.mano = new Mano(b);
-        //this.zonaJuego = new ZonaJuego(b);
+        this.zonaJuego = new ZonaJuego(b);
     }
 
     /**
@@ -418,48 +420,25 @@ public class Jugador {
         
         public boolean bandadaPequenha(Carta c){
             boolean toRet=false;
-            switch (c.getEspecie()){
-                case (Carta.especies[0]):
-                    if(numeroCartasTipo(Carta.especies[0])==c.bandadasP[0]){
-                        toRet=true;
-                    }
-                    break;
-                case (Carta.especies[1]):
-                    if(numeroCartasTipo(Carta.especies[1])==Carta.especies[1]){
-                        toRet=true;
-                    }
-                    break;
-                case (Carta.especies[2]):
-                    if(numeroCartasTipo(Carta.especies[2])==Carta.bandadasP[2]){
-                        toRet=true;
-                    }
-                    break;
-                case (Carta.especies[3]):
-                    if(numeroCartasTipo(Carta.especies[3])==Carta.especies[3]){
-                        toRet=true;
-                    }
-                    break;
-                    case (Carta.especies[4]):
-                    if(numeroCartasTipo(Carta.especies[4])==Carta.bandadasP[4]){
-                        toRet=true;
-                    }
-                    break;
-                case (Carta.especies[5]):
-                    if(numeroCartasTipo(Carta.especies[5])==Carta.especies[5]){
-                        toRet=true;
-                    }
-                    break;
-                    case (Carta.especies[6]):
-                    if(numeroCartasTipo(Carta.especies[6])==Carta.bandadasP[6]){
-                        toRet=true;
-                    }
-                    break;
-                case (Carta.especies[7]):
-                    if(numeroCartasTipo(Carta.especies[7])==Carta.especies[7]){
-                        toRet=true;
-                    }
-                    break;
+            if(c.getEspecie().equals(Carta.especies[0]) && numeroCartasTipo(Carta.especies[0])==Carta.bandadasP[0]){
+                toRet = true;
+            }else if(c.getEspecie().equals(Carta.especies[1]) && numeroCartasTipo(Carta.especies[1])==Carta.bandadasP[1]){
+                toRet = true;
+            }else if(c.getEspecie().equals(Carta.especies[2]) && numeroCartasTipo(Carta.especies[2])==Carta.bandadasP[2]){
+                toRet = true;
+            }else if(c.getEspecie().equals(Carta.especies[3]) && numeroCartasTipo(Carta.especies[3])==Carta.bandadasP[3]){
+                toRet = true;
+            }else if(c.getEspecie().equals(Carta.especies[4]) && numeroCartasTipo(Carta.especies[4])==Carta.bandadasP[4]){
+                toRet = true;
+            }else if(c.getEspecie().equals(Carta.especies[5]) && numeroCartasTipo(Carta.especies[5])==Carta.bandadasP[5]){
+                toRet = true;
+            }else if(c.getEspecie().equals(Carta.especies[6]) && numeroCartasTipo(Carta.especies[6])==Carta.bandadasP[6]){
+                toRet = true;
+            }else if(c.getEspecie().equals(Carta.especies[7]) && numeroCartasTipo(Carta.especies[7])==Carta.bandadasP[7]){
+                toRet = true;
             }
+
+            
                return toRet;
         }
         @Override

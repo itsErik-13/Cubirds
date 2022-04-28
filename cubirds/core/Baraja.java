@@ -21,30 +21,10 @@ public class Baraja {
      */
     public Baraja(){
         baraja = new ArrayDeque<>();
-        for (int i = 0; i < 20; i++) {
-            baraja.add(new Carta("Curruca de caña", 6, 9));
-            cont++;
-        }
-        for (int i = 0; i < 7; i++) {
-            baraja.add(new Carta("Flamenco", 2, 3));
-        }
-        for (int i = 0; i < 20; i++) {
-            baraja.add(new Carta("Petirrojo", 6, 9));
-        }
-        for (int i = 0; i < 10; i++) {
-            baraja.add(new Carta("Tucán", 3, 4));
-        }
-        for (int i = 0; i < 13; i++) {
-            baraja.add(new Carta("Pato", 4, 6));
-        }
-        for (int i = 0; i < 17; i++) {
-            baraja.add(new Carta("Urraca", 5, 7));
-        }
-        for (int i = 0; i < 10; i++) {
-            baraja.add(new Carta("Lechuza", 3, 4));
-        }
-        for (int i = 0; i < 13; i++) {
-            baraja.add(new Carta("Guacamayo", 4, 6));
+        for(int i = 0; i < Carta.numCartas.length ; i++){
+            for (int j = 0; j < Carta.numCartas[i]; j++) {
+                baraja.add(new Carta(Carta.especies[i],Carta.bandadasP[i],Carta.bandadasG[i]));
+            }
         }
         barajar();
     }

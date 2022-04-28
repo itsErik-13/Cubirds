@@ -12,28 +12,27 @@ public class Juego {
 
     public static void inicio() {
 
-
         /*
-        ///Leer jugadores:
-        int numJugadores;
-        do {
-        numJugadores = ES.pideNumero("Introduce el numero de jugadores:");
-        } while (numJugadores < 2 || numJugadores > 5);
-        Jugador [] jugadores = new Jugador[numJugadores];
-        // Se crea la baraja
-        Baraja baraja = new Baraja();
-        // Se crea el montón de descartes
-        MontonDescartes md = new MontonDescartes();
-        // Se crea la mesa con las cartas iniciales
-        Mesa mesa = new Mesa();
-        mesa.colocarMesaInicial(baraja);
-        // //Se crean los jugadores
-        // for (int i = 0; i < numJugadores; i++) {
-        //     jugadores[i] = new Jugador(ES.pideCadena("Introduce el nombre del jugador " + (i + 1) + ":"));
-        // }
-
-        */
-
+         * ///Leer jugadores:
+         * int numJugadores;
+         * do {
+         * numJugadores = ES.pideNumero("Introduce el numero de jugadores:");
+         * } while (numJugadores < 2 || numJugadores > 5);
+         * Jugador [] jugadores = new Jugador[numJugadores];
+         * // Se crea la baraja
+         * Baraja baraja = new Baraja();
+         * // Se crea el montón de descartes
+         * MontonDescartes md = new MontonDescartes();
+         * // Se crea la mesa con las cartas iniciales
+         * Mesa mesa = new Mesa();
+         * mesa.colocarMesaInicial(baraja);
+         * System.out.println(mesa);
+         * // //Se crean los jugadores
+         * // for (int i = 0; i < numJugadores; i++) {
+         * // jugadores[i] = new
+         * Jugador(ES.pideCadena("Introduce el nombre del jugador " + (i + 1) + ":"));
+         * // }
+         */
 
         // Se reparten las cartas
 

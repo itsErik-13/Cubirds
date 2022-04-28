@@ -352,14 +352,14 @@ public class Jugador {
     
     private class Mano {
         private List <Carta> mano;
-        public final int BANDADA_PEQUENA_FLAMENCO =2;
-        public final int BANDADA_PEQUENA_TUCAN =3;
-        public final int BANDADA_PEQUENA_LECHUZA =3;
-        public final int BANDADA_PEQUENA_PATO =4;
-        public final int BANDADA_PEQUENA_GUACAMAYO =4;
-        public final int BANDADA_PEQUENA_URRACA =5;
-        public final int BANDADA_PEQUENA_CURRUCADECANA =6;
-        public final int BANDADA_PEQUENA_PETIRROJO =6;
+        public final int BANDADA_PEQUENA_FLAMENCO = 2;
+        public final int BANDADA_PEQUENA_TUCAN = 3;
+        public final int BANDADA_PEQUENA_LECHUZA = 3;
+        public final int BANDADA_PEQUENA_PATO = 4;
+        public final int BANDADA_PEQUENA_GUACAMAYO = 4;
+        public final int BANDADA_PEQUENA_URRACA = 5;
+        public final int BANDADA_PEQUENA_CURRUCADECANA = 6;
+        public final int BANDADA_PEQUENA_PETIRROJO = 6;
         
         public Mano (Baraja b){
             mano=new ArrayList<>(8);

@@ -66,26 +66,13 @@ public class Jugador {
         return mano.numeroCartas();
     }
 
-    /**
-     * @author ivanr
-     *
-     * Devuelve el numero de cartas en la zona de juego
-     *
-     * @return
-     */
-    /*public int numCartasZonaJuego() {
+    public int numCartasZonaJuego() {
         return zonaJuego.numeroCartas();
-    }*/
-    /**
-     * @author ivanr
-     *
-     * Devuelve el numero de especies distintas en la zona de juego
-     *
-     * @return
-     */
-    /*public int especiesDistintasZonaJuego() {
+    }
+
+    public int especiesDistintasZonaJuego() {
         return zonaJuego.especiesDistintas();
-    }*/
+    }
     /**
      * @author ivanr
      *
@@ -352,14 +339,10 @@ public class Jugador {
     
     private class Mano {
         private List <Carta> mano;
-        public final int BANDADA_PEQUENA_FLAMENCO = 2;
-        public final int BANDADA_PEQUENA_TUCAN = 3;
-        public final int BANDADA_PEQUENA_LECHUZA = 3;
-        public final int BANDADA_PEQUENA_PATO = 4;
-        public final int BANDADA_PEQUENA_GUACAMAYO = 4;
-        public final int BANDADA_PEQUENA_URRACA = 5;
-        public final int BANDADA_PEQUENA_CURRUCADECANA = 6;
-        public final int BANDADA_PEQUENA_PETIRROJO = 6;
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 15f39ca4d681c4ac0fcb5fea8c63cdc8d90ee8fa
         
         public Mano (Baraja b){
             mano=new ArrayList<>(8);
@@ -375,15 +358,12 @@ public class Jugador {
         }
         
         public List<Carta> eliminarCartas(Carta carta){
-            int cont=0;
             List <Carta> toRet=new ArrayList<>();
             for (Carta i : mano) {
-                
-                if(i.sonIguales(carta)){
-                    toRet.add(mano.get(cont));
+                if(i.equals(carta)){
+                    toRet.add(i);
                     mano.remove(i);
                 }
-                cont++;
             }
             
             return toRet;
@@ -407,47 +387,46 @@ public class Jugador {
         public boolean bandadaPequenha(Carta c){
             boolean toRet=false;
             switch (c.getEspecie()){
-                case ("Flamenco"):
-                    if(numeroCartasTipo("Flamenco")==BANDADA_PEQUENA_FLAMENCO){
+                case (c.especies[0]):
+                    if(numeroCartasTipo(c.especies[0])==c.bandadasP[0]){
                         toRet=true;
                     }
                     break;
-                case ("Tucán"):
-                    if(numeroCartasTipo("Tucán")==BANDADA_PEQUENA_TUCAN){
-                        toRet=true;
-                    }
-                    break;    
-                case ("Lechuza"):
-                    if(numeroCartasTipo("Lechuza")==BANDADA_PEQUENA_LECHUZA){
+                case (c.especies[1]):
+                    if(numeroCartasTipo(c.especies[1])==c.especies[1]){
                         toRet=true;
                     }
                     break;
-                case ("Pato"):
-                    if(numeroCartasTipo("Pato")==BANDADA_PEQUENA_PATO){
-                        toRet=true;
-                    }
-                    break;    
-                case ("Guacamayo"):
-                    if(numeroCartasTipo("Guacamayo")==BANDADA_PEQUENA_GUACAMAYO){
-                        toRet=true;
-                    }
-                    break;    
-                case ("Urraca"):
-                    if(numeroCartasTipo("Urraca")==BANDADA_PEQUENA_URRACA){
-                        toRet=true;
-                    }
-                    break;    
-                case ("Curruca de caña"):
-                    if(numeroCartasTipo("Curruca de caña")==BANDADA_PEQUENA_CURRUCADECANA){
+                case (c.especies[2]):
+                    if(numeroCartasTipo(c.especies[2])==c.bandadasP[2]){
                         toRet=true;
                     }
                     break;
-                case ("Petirrojo"):
-                    if(numeroCartasTipo("Petirrojo")==BANDADA_PEQUENA_PETIRROJO){
+                case (c.especies[3]):
+                    if(numeroCartasTipo(c.especies[3])==c.especies[3]){
                         toRet=true;
                     }
-                    break;    
-                    
+                    break;
+                    case (c.especies[4]):
+                    if(numeroCartasTipo(c.especies[4])==c.bandadasP[4]){
+                        toRet=true;
+                    }
+                    break;
+                case (c.especies[5]):
+                    if(numeroCartasTipo(c.especies[5])==c.especies[5]){
+                        toRet=true;
+                    }
+                    break;
+                    case (c.especies[6]):
+                    if(numeroCartasTipo(c.especies[6])==c.bandadasP[6]){
+                        toRet=true;
+                    }
+                    break;
+                case (c.especies[7]):
+                    if(numeroCartasTipo(c.especies[7])==c.especies[7]){
+                        toRet=true;
+                    }
+                    break;
             }
                return toRet;
         }

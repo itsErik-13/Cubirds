@@ -14,6 +14,9 @@ package es.uvigo.esei.cubirds.core;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import javax.swing.text.html.parser.ContentModel;
+
 import java.util.LinkedList;
 
 public class Jugador {
@@ -41,7 +44,6 @@ public class Jugador {
         }
         return cont;
     }
-    
 
     /**
      * @author ivanr
@@ -310,18 +312,14 @@ public class Jugador {
             sb.append(mano.toString()).append("\n");
         }
 
-        /*
-         * if (numCartasZonaJuego() == 1) {
-         * sb.append("\nTienes ").append(numCartasZonaJuego()).
-         * append(" carta en la zona de juego: ").append("\n");
-         * sb.append(zonaJuego.toString()).append("\n");
-         * }
-         * else {
-         * sb.append("\nTienes ").append(numCartasZonaJuego()).
-         * append(" cartas en la zona de juego: ").append("\n");
-         * sb.append(zonaJuego.toString()).append("\n");
-         * }
-         */
+        // if (numCartasZonaJuego() == 1) {
+        //     sb.append("\nTienes ").append(numCartasZonaJuego()).append(" carta en la zona de juego: ").append("\n");
+        //     sb.append(zonaJuego.toString()).append("\n");
+        // } else {
+        //     sb.append("\nTienes ").append(numCartasZonaJuego()).append(" cartas en la zona de juego: ").append("\n");
+        //     sb.append(zonaJuego.toString()).append("\n");
+        // }
+
         return sb.toString();
     }
 
@@ -359,15 +357,6 @@ public class Jugador {
         public int getNumCartas() {
             return conjuntoCarta.size();
         }
-<<<<<<< HEAD
-        
-        @Override
-        public String toString()
-        {
-            StringBuilder sb = new StringBuilder();
-            for(Carta i: conjuntoCarta){
-                sb.append(i);
-=======
 
         public int getNumCartasDistintas() {
             return getCartasDistintas().size();
@@ -379,14 +368,26 @@ public class Jugador {
                 if (!toRet.contains(carta)) {
                     toRet.add(carta);
                 }
->>>>>>> 41f19fbbc27200f504441c0312384014f932faac
             }
             return toRet;
         }
 
         @Override
         public String toString() {
-            return conjuntoCarta.toString();
+            StringBuilder sb = new StringBuilder();
+            List<Carta> cartas = getCartasDistintas();
+            for (Carta carta : cartas) {
+                sb.append(carta).append(" ");
+            }
+            return sb.toString();
+        }
+
+        public String toStringRepetidos() {
+            StringBuilder sb = new StringBuilder();
+            for (Carta carta : conjuntoCarta) {
+                sb.append(carta).append(" ");
+            }
+            return sb.toString();
         }
     }
 
@@ -405,7 +406,11 @@ public class Jugador {
         private List<Carta> mano;
 
         public Mano(Baraja b) {
-            mano = new ArrayList<>();
+            mano = new ArrayList<>(8);
+
+            for (Carta i : mano) {
+                mano.add(mano.size(), b.sacarCarta());
+            }
 
         }
 
@@ -421,7 +426,6 @@ public class Jugador {
                     mano.remove(i);
                 }
             }
-
             return toRet;
         }
 
@@ -429,11 +433,15 @@ public class Jugador {
             return mano.size();
         }
 
-        public boolean bandadaPequenha(Carta c) {
+        public boolean bandadaPequenha() {
             boolean toRet = false;
-            for (int i = 0; i < Carta.especies.length; i++) {
-                if (c.getEspecie().equals(Carta.especies[i]) && Jugador.numCartasEspecie(c, mano) >= Carta.bandadasP[i]) 
-                    toRet = true;
+
+            for (Carta carta : mano) {
+                for (int i = 0; i < Carta.especies.length; i++) {
+                    if (carta.getEspecie().equals(Carta.especies[i])
+                            && Jugador.numCartasEspecie(carta, mano) >= Carta.bandadasP[i])
+                        toRet = true;
+                }
             }
             return toRet;
         }

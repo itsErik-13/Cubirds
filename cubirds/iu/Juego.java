@@ -3,8 +3,6 @@
  */
 package es.uvigo.esei.cubirds.iu;
 
-import java.net.JarURLConnection;
-import java.util.LinkedList;
 import java.util.List;
 
 import es.uvigo.esei.cubirds.core.*;

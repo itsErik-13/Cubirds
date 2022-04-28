@@ -31,22 +31,26 @@ public class Mesa {
         for (int i = 0; i < MAX_FILAS; i++) {
             while (mesa[i].size() < 3) {
                 Carta cartaIntroducir = baraja.sacarCarta();
-                if (Mesa.contieneCarta(cartaIntroducir, mesa[i])) {
+
+                if (mesa[i].contains(cartaIntroducir)) {
                     baraja.insertarCarta(cartaIntroducir);
                 } else {
                     mesa[i].add(cartaIntroducir);
                 }
+
             }
         }
     }
-/**
- * 
- * @param carta Lista de cartas a insertar
- * @param fila Numero de la fila en la que se va a insertar, de 0 a 3
- * @param extremo Extremo por el que se va a insertar, true para derecha y false para izquierda
- * @param baraja 
- * @return Devuelve las cartas rodeadas al introducir
- */
+
+    /**
+     * 
+     * @param carta   Lista de cartas a insertar
+     * @param fila    Numero de la fila en la que se va a insertar, de 0 a 3
+     * @param extremo Extremo por el que se va a insertar, true para derecha y false
+     *                para izquierda
+     * @param baraja
+     * @return Devuelve las cartas rodeadas al introducir
+     */
     public List<Carta> insertar(List<Carta> carta, int fila, boolean extremo, Baraja baraja) {
         List<Carta> toRet = cartasRodeadas(carta.get(0), fila, extremo);
         if (extremo) {
@@ -54,25 +58,26 @@ public class Mesa {
         } else {
             mesa[fila].addAll(0, carta);
         }
-        rellenar(baraja, fila);
         return toRet;
     }
-/**
- * 
- * @param carta
- * @param fila
- * @param extremo
- * @return Devuelve las cartas que se encuentran entre una carta y la más proxima de esa especie por el correspondiente extremo
- */
+
+    /**
+     * 
+     * @param carta
+     * @param fila
+     * @param extremo
+     * @return Devuelve las cartas que se encuentran entre una carta y la más
+     *         proxima de esa especie por el correspondiente extremo
+     */
     public List<Carta> cartasRodeadas(Carta carta, int fila, boolean extremo) {
         List<Carta> toRet = new LinkedList<>();
-        if (Mesa.contieneCarta(carta, mesa[fila])) {
+        if (mesa[fila].contains(carta)) {
             if (extremo) {
-                for (int i = mesa[fila].size() - 1; i >= 0 && !mesa[fila].get(i).sonIguales(carta); i--) {
+                for (int i = mesa[fila].size() - 1; i >= 0 && !mesa[fila].get(i).equals(carta); i--) {
                     toRet.add(mesa[fila].get(i));
                 }
             } else {
-                for (int i = 0; i < mesa[fila].size() && !mesa[fila].get(i).sonIguales(carta); i++) {
+                for (int i = 0; i < mesa[fila].size() && !mesa[fila].get(i).equals(carta); i++) {
                     toRet.add(mesa[fila].get(i));
                 }
             }
@@ -87,26 +92,33 @@ public class Mesa {
     /**
      * 
      * @param baraja
-     * @param fila La fila que se va a rellenar, si es necesario
-     * @return Devuelve true si se ha rellenado la fila, false en caso contrario, de modo que se puede usar para 
-     * acabar la partida si no puede rellenarse la fila
+     * @param fila   La fila que se va a rellenar, si es necesario
+     * @return Devuelve true si se ha rellenado la fila, false en caso contrario, de
+     *         modo que se puede usar para
+     *         acabar la partida si no puede rellenarse la fila
      */
-    public boolean rellenar(Baraja baraja, int fila) {
-        boolean rellenar = true;
-        for (int i = 0; i < mesa[fila].size() - 1; i++) {
-            if (!mesa[fila].get(i).sonIguales(mesa[fila].get(i + 1)))
-                rellenar = false;
-        }
-        for (int i = 0; i < baraja.size() && rellenar; i++) {
-            Carta cartaIntroducir = baraja.sacarCarta();
-            if (cartaIntroducir.sonIguales(mesa[fila].get(0))) {
-                baraja.insertarCarta(cartaIntroducir);
-            } else {
-                mesa[fila].add(cartaIntroducir);
-                rellenar = false;
+    public boolean rellenar(Baraja baraja) {
+        for (int fila = 0; fila < MAX_FILAS; fila++) {
+            boolean rellenar = true;
+            for (int i = 0; i < mesa[fila].size() - 1; i++) {
+                if (!mesa[fila].get(i).equals(mesa[fila].get(i + 1)))
+                    rellenar = false;
+            }
+            for (int i = 0; i < baraja.size() && rellenar; i++) {
+                Carta cartaIntroducir = baraja.sacarCarta();
+                if (cartaIntroducir.equals(mesa[fila].get(0))) {
+                    baraja.insertarCarta(cartaIntroducir);
+                } else {
+                    mesa[fila].add(cartaIntroducir);
+                    System.out.println("Fila " + fila + " rellenada");
+                    rellenar = false;
+                }
+            }
+            if (rellenar) {
+                return false;
             }
         }
-        return !rellenar;
+        return true;
     }
 
     public String toString() {
@@ -120,14 +132,5 @@ public class Mesa {
         }
         return sb.toString();
     }
-//Esto deberia de cambiarse a carta creo yo
-    public static boolean contieneCarta(Carta carta, List<Carta> lista) {
-        boolean toRet = false;
-        for (Carta c : lista) {
-            if (c.sonIguales(carta)) {
-                toRet = true;
-            }
-        }
-        return toRet;
-    }
+
 }

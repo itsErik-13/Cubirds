@@ -4,8 +4,6 @@
 
 package es.uvigo.esei.cubirds.core;
 
-import java.util.List;
-
 public class Carta {
     // public static final String C1_ESPECIE = "Curruca de caña";
     // public static final String C2_ESPECIE = "Flamenco";
@@ -37,10 +35,15 @@ public class Carta {
     public int getBandadaG() {
         return bandadaG;
     }
-
-    public boolean sonIguales(Carta carta){
-        return this.especie.equals(carta.getEspecie());
-    }
+    
+    @Override
+    public boolean equals(Object carta){
+        if(carta instanceof Carta){
+          Carta toCompare = (Carta) carta;
+          return this.getEspecie().equals(toCompare.getEspecie());
+        }
+        return false;
+      }
 
     @Override
     public String toString() {

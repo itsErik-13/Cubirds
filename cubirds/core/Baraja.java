@@ -79,6 +79,10 @@ public class Baraja {
         baraja.add(carta);
     }
 
+    /**
+     * 
+     * @return Devuelve el numero de cartas que quedan en la baraja
+     */
     public int size(){
         return baraja.size();
     }

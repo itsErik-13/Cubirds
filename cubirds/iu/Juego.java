@@ -12,29 +12,28 @@ public class Juego {
 
     public static void inicio() {
 
-        // //Prueba de creación de baraja
-        // Baraja baraja = new Baraja();
-        // System.out.println(baraja);
 
-        //Prueba de creacion de mesa inicial + modificaciones en la mesa
+        /*
+        ///Leer jugadores:
+        int numJugadores;
+        do {
+        numJugadores = ES.pideNumero("Introduce el numero de jugadores:");
+        } while (numJugadores < 2 || numJugadores > 5);
+        Jugador [] jugadores = new Jugador[numJugadores];
+        // Se crea la baraja
         Baraja baraja = new Baraja();
+        // Se crea el montón de descartes
+        MontonDescartes md = new MontonDescartes();
+        // Se crea la mesa con las cartas iniciales
         Mesa mesa = new Mesa();
         mesa.colocarMesaInicial(baraja);
-        System.out.println(mesa);
-        List<Carta> cartas = new LinkedList<>();
-        cartas.add(new Carta("Curruca de caña",6, 9));
-        cartas.add(new Carta("Curruca de caña",6, 9));
-        cartas.add(new Carta("Curruca de caña",6, 9));
-        mesa.insertar(cartas, 3, false,baraja);
-        System.out.println(mesa);
+        // //Se crean los jugadores
+        // for (int i = 0; i < numJugadores; i++) {
+        //     jugadores[i] = new Jugador(ES.pideCadena("Introduce el nombre del jugador " + (i + 1) + ":"));
+        // }
 
-        // Se crea la baraja
+        */
 
-        // Se crea el montón de descartes
-
-        // Se crea la mesa con las cartas iniciales
-
-        // Se crean los jugadores
 
         // Se reparten las cartas
 
@@ -45,6 +44,7 @@ public class Juego {
         // Se pregunta si quiere colocar cartas en la zona de juego
         // Si el jugador no es ganador, se comprueba si se ha quedado sin cartas
         // Se rellena la mesa
+
     }
 
 }

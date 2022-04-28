@@ -122,13 +122,6 @@ public class Jugador {
     /**
      * @author ivanr
      *
-     *         Mete una carta en la zona de juego
-     *
-     * @param a
-     */
-    /**
-     * @author ivanr
-     *
      *         Aqui leo la fila de la mesa en la que voy a insertar la/s carta/s
      *
      * @param fila

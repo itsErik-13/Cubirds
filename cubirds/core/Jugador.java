@@ -322,9 +322,45 @@ public class Jugador {
     * - Número de especies distintas
     * - mostrar zona de juego
     */
-    private class ZonaJuego {
-
-    } 
+    private static class ZonaJuego 
+    {
+        private List<Carta> conjuntoCarta;
+        
+        public ZonaJuego()
+        {
+            conjuntoCarta=new LinkedList<>();
+        }
+        
+        public void insertarCarta(Carta c)
+        {
+            conjuntoCarta.add(c);
+        }
+        
+        public int getNumCartas()
+        {
+            return conjuntoCarta.size();
+        }
+        
+        public int getNumCartasDistintas()
+        {
+            int toret=0;
+            for(String p: Carta.nombreCarta)
+            {
+                if(conjuntoCarta.buscar(new Carta(p,0,0)))
+                {
+                    toret++;
+                }
+            }
+            System.out.println("----"+toret+"------");
+            return toret;
+        }
+        
+        @Override
+        public String toString()
+        {
+            return conjuntoCarta.toString();
+        }
+    }  
     
           
     /*

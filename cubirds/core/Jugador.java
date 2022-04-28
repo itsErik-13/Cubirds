@@ -345,22 +345,18 @@ public class Jugador {
         
         public int getNumCartasDistintas()
         {
-            int toret=0;
-            for(String p: Carta.nombreCarta)
-            {
-                if(conjuntoCarta.buscar(new Carta(p,0,0)))
-                {
-                    toret++;
-                }
-            }
-            System.out.println("----"+toret+"------");
-            return toret;
+           
         }
         
         @Override
         public String toString()
         {
-            return conjuntoCarta.toString();
+            StringBuilder sb = new StringBuilder();
+            for(Carta i: conjuntoCarta){
+                sb.append(i);
+            }
+
+            return sb.toString();
         }
     }  
     
@@ -378,13 +374,8 @@ public class Jugador {
     private class Mano {
         private List <Carta> mano;
         
-        public Mano (Baraja b){
-            mano=new ArrayList<>(8);
-            
-            for(Carta i: mano){
-                mano.add(mano.size(),b.sacarCarta());
-            }
-            
+        public Mano (){
+            mano=new LinkedList<>();                   
         }
     
         public void anhadirCartas(List <Carta> c){
@@ -392,7 +383,7 @@ public class Jugador {
         }
         
         public List<Carta> eliminarCartas(Carta carta){
-            List <Carta> toRet=new ArrayList<>();
+            List <Carta> toRet=new LinkedList<>();
             for (Carta i : mano) {
                 if(i.equals(carta)){
                     toRet.add(i);

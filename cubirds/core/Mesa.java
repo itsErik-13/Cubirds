@@ -86,7 +86,6 @@ public class Mesa {
                 mesa[fila].remove(cartasRodeadas);
             }
         }
-        System.out.println(toRet);
         return toRet;
     }
 

@@ -54,8 +54,10 @@ public class Jugador {
      */
     public Jugador(String nombre, Baraja b) {
         this.nombre = nombre;
+        List<Carta> cartasMano = new LinkedList<>();
+        
         this.mano = new Mano(b);
-        this.zonaJuego = new ZonaJuego();
+        this.zonaJuego = new ZonaJuego(b.sacarCarta());
     }
 
     /**
@@ -111,10 +113,14 @@ public class Jugador {
     public List<Carta> colocarMesa(Baraja b, Mesa m) {
 
         Carta carta = leerEspecie();
+
+        System.out.println(carta);
        
         int fila = leerFila();
+        System.out.println(fila);
 
         boolean extremo = leerExtremo();
+        System.out.println(extremo);
 
         return m.insertar(mano.eliminarCartas(carta), fila, extremo);
     }
@@ -135,11 +141,12 @@ public class Jugador {
     }
 
     private Carta leerEspecie() {
+        List<Carta> cartasDistintas = Jugador.getCartasDistintas(mano.mano);
         int especie = 0;
        do {
            especie = ES.pideNumero("Introduce la especie: ");
-       } while (especie < 1 || especie > numCartasMano());
-       return mano.getCarta(especie - 1);
+       } while (especie < 1 || especie > cartasDistintas.size());
+       return cartasDistintas.get(especie - 1);
     }
 
     /**
@@ -177,18 +184,18 @@ public class Jugador {
         StringBuilder sb = new StringBuilder(this.nombre);
 
         if (numCartasMano() == 1) {
-            sb.append("\nTienes ").append(numCartasMano()).append(" carta en la mano: ").append("\n");
+            sb.append("\nTienes ").append(numCartasMano()).append(" carta en la mano: ").append("\n\n");
             sb.append(mano.toString()).append("\n");
         } else {
-            sb.append("\nTienes ").append(numCartasMano()).append(" cartas en la mano: ").append("\n");
+            sb.append("\nTienes ").append(numCartasMano()).append(" cartas en la mano: ").append("\n\n");
             sb.append(mano.toString()).append("\n");
         }
 
         if (numCartasZonaJuego() == 1) {
-            sb.append("\nTienes ").append(numCartasZonaJuego()).append(" carta en la zona de juego: ").append("\n");
+            sb.append("\nTienes ").append(numCartasZonaJuego()).append(" carta en la zona de juego: ").append("\n\n");
             sb.append(zonaJuego.toString()).append("\n");
         } else {
-            sb.append("\nTienes ").append(numCartasZonaJuego()).append(" cartas en la zona de juego: ").append("\n");
+            sb.append("\nTienes ").append(numCartasZonaJuego()).append(" cartas en la zona de juego: ").append("\n\n");
             sb.append(zonaJuego.toString()).append("\n");
         }
 
@@ -207,8 +214,9 @@ public class Jugador {
     private static class ZonaJuego {
         private List<Carta> conjuntoCarta;
 
-        public ZonaJuego() {
+        public ZonaJuego(Carta carta)  {
             conjuntoCarta = new LinkedList<>();
+            insertarCarta(carta);
         }
 
         public void insertarCarta(Carta c) {
@@ -229,7 +237,7 @@ public class Jugador {
             StringBuilder sb = new StringBuilder();
             List<Carta> cartas = Jugador.getCartasDistintas(conjuntoCarta);
             for (Carta carta : cartas) {
-                sb.append(carta).append(": ").append(Jugador.numCartasEspecie(carta, conjuntoCarta)).append("\n");
+                sb.append("   ·").append(carta).append(": ").append(Jugador.numCartasEspecie(carta, conjuntoCarta)).append("\n");
             }
             return sb.toString();
         }
@@ -237,7 +245,7 @@ public class Jugador {
         public String toStringRepetidos() {
             StringBuilder sb = new StringBuilder();
             for (Carta carta : conjuntoCarta) {
-                sb.append(carta).append(" ");
+                sb.append("   ·").append(carta).append(" ");
             }
             return sb.toString();
         }
@@ -258,12 +266,21 @@ public class Jugador {
         private List<Carta> mano;
 
         public Mano(Baraja b) {
-            mano = new ArrayList<>(8);
+            mano = new LinkedList<>();
 
-            for (Carta i : mano) {
-                mano.add(mano.size(), b.sacarCarta());
+            cogerCartas(b);
+
+        }
+
+        public boolean cogerCartas(Baraja b){
+            if(b.size() < 8){
+                return false;
+            }else{
+                for (int i = 0; i < 8; i++) {
+                    mano.add(b.sacarCarta());
+                }
+                return true;
             }
-
         }
 
         public void anhadirCartas(List<Carta> c) {
@@ -271,13 +288,12 @@ public class Jugador {
         }
 
         public List<Carta> eliminarCartas(Carta carta) {
-            List<Carta> toRet = new ArrayList<>();
+            List<Carta> toRet = new LinkedList<>();
             for (Carta i : mano) {
                 if (i.equals(carta)) {
                     toRet.add(i);
-                    mano.remove(i);
                 }
-            }
+            }mano.removeAll(toRet);
             return toRet;
         }
 
@@ -305,19 +321,20 @@ public class Jugador {
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            for (Carta carta : mano) {
-                sb.append(carta);
+            List<Carta> cartas = Jugador.getCartasDistintas(mano);
+            for (Carta carta : cartas) {
+                sb.append("   ·").append(carta).append(": ").append(Jugador.numCartasEspecie(carta, mano)).append("\n");
             }
             return sb.toString();
         }
 
         public String toStringDistintas() {
             StringBuilder sb = new StringBuilder();
-            List<Carta> cartas = Jugador.getCartasDistintas(mano);
-            for (Carta carta : cartas) {
-                sb.append(carta).append(": ").append(Jugador.numCartasEspecie(carta, mano)).append("\n");
+            for (Carta carta : mano) {
+                sb.append("   ·").append(carta);
             }
             return sb.toString();
         }
+        
     }
 }

@@ -3,6 +3,7 @@
  */
 package es.uvigo.esei.cubirds.iu;
 
+import java.net.JarURLConnection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import es.uvigo.esei.cubirds.core.*;
 
 public class Juego {
 
-    public static void inicio() {
+    public static void inicio() throws InterruptedException {
 
         /// Leer jugadores:
         int numJugadores;
@@ -22,14 +23,44 @@ public class Juego {
         Baraja baraja = new Baraja();
         // Se crea el montón de descartes
         MontonDescartes md = new MontonDescartes();
-        // Se crea la mesa con las cartas iniciales
-        Mesa mesa = new Mesa();
-        mesa.colocarMesaInicial(baraja);
-        System.out.println(mesa);
         //Se crean los jugadores
         for (int i = 0; i < numJugadores; i++) {
             jugadores[i] = new Jugador(ES.pideCadena("Introduce el nombre del jugador " + (i + 1) + ":"),baraja);
         }
+        Mesa mesa = new Mesa();
+        mesa.colocarMesaInicial(baraja);
+        System.out.println(mesa);
+
+        int turno = (int)(Math.random()*numJugadores);
+
+        boolean ganador = false;
+
+        while(!ganador){
+            turno = ++turno % numJugadores;
+            Jugador actual = jugadores[turno];
+            System.out.println(actual);
+            List<Carta> toAdd = actual.colocarMesa(baraja, mesa);
+            if(toAdd.size() == 0){
+
+            }else{
+                actual.meterCartasMano(toAdd);
+            }
+            if(actual.numCartasMano() == 0){
+
+            }
+            System.out.println(actual);
+            if(!mesa.rellenar(baraja)){
+            
+            }
+            ganador = true;
+        }
+        if(jugadores[turno].especiesDistintasZonaJuego() >= 7){
+            //Ganador de verdad
+        }else{
+            //Ganadores de palo
+        }
+
+        
 
         // Se reparten las cartas
 

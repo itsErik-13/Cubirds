@@ -12,29 +12,19 @@
 package es.uvigo.esei.cubirds.core;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
-import javax.swing.text.html.parser.ContentModel;
+
+import es.uvigo.esei.cubirds.iu.ES;
 
 import java.util.LinkedList;
 
 public class Jugador {
 
+    private String nombre;
     private Mano mano;
     private ZonaJuego zonaJuego;
 
-    /**
-     * @author ivanr
-     *
-     *         Crea un jugador con su mano y su zona de juego
-     *
-     * @param b
-     */
-    public Jugador(Baraja b) {
-        this.mano = new Mano(b);
-        this.zonaJuego = new ZonaJuego();
-    }
 
     public static int numCartasEspecie(Carta c, List<Carta> conjunto) {
         int cont = 0;
@@ -45,6 +35,29 @@ public class Jugador {
         return cont;
     }
 
+    public static List<Carta> getCartasDistintas(List<Carta> conjuntoCarta) {
+        List<Carta> toRet = new LinkedList<>();
+        for (Carta carta : conjuntoCarta) {
+            if (!toRet.contains(carta)) {
+                toRet.add(carta);
+            }
+        }
+        return toRet;
+    }
+
+    /**
+     * @author ivanr
+     *
+     *         Crea un jugador con su mano y su zona de juego
+     *
+     * @param b
+     */
+    public Jugador(String nombre, Baraja b) {
+        this.nombre = nombre;
+        this.mano = new Mano(b);
+        this.zonaJuego = new ZonaJuego();
+    }
+
     /**
      * @author ivanr
      *
@@ -52,7 +65,7 @@ public class Jugador {
      *
      * @param c
      */
-    public void meterCartas(List<Carta> c) {
+    public void meterCartasMano(List<Carta> c) {
         mano.anhadirCartas(c);
     }
 
@@ -64,7 +77,7 @@ public class Jugador {
      * @param c
      * @return
      */
-    public List<Carta> quitarCartas(Carta c) {
+    public List<Carta> quitarCartasMano(Carta c) {
         return mano.eliminarCartas(c);
     }
 
@@ -80,11 +93,11 @@ public class Jugador {
     }
 
     public int numCartasZonaJuego() {
-        return zonaJuego.numeroCartas();
+        return zonaJuego.getNumCartas();
     }
 
     public int especiesDistintasZonaJuego() {
-        return zonaJuego.especiesDistintas();
+        return zonaJuego.getNumCartasDistintas();
     }
 
     /**
@@ -94,128 +107,39 @@ public class Jugador {
      *
      * @param b
      * @param m
-     * @param j
      */
-    public void colocarMesa(Baraja b, Mesa m, Jugador j) {
-        Carta carta = new Carta("", 0, 0);
-        String cad = "";
-        int fila = 1, num = 0;
-        boolean extremo = false, repite = true;
-        List<Carta> l = new LinkedList();
-        List<Carta> s = new LinkedList();
-        // List<Carta> r = new LinkedList();
+    public List<Carta> colocarMesa(Baraja b, Mesa m) {
 
-        System.out.println("\t               ...Mostrando mesa...\n" + m);
-        System.out.println("\t    ...Mostrando mano...\n" + toString());
+        Carta carta = leerEspecie();
+       
+        int fila = leerFila();
 
-        fila = leerFila(fila, repite);
+        boolean extremo = leerExtremo();
 
-        carta = leerEspecie(l, s, repite, carta, cad);
-
-        extremo = leerExtremo(repite, num, extremo);
-
-        m.insertar(mano.eliminarCartas(carta), fila, extremo, b, j);
-
-        System.out.println("\t           ...Mostrando mesa cambiada...\n" + m);
-
-        System.out.println("\t    ...Mostrando mano cambiada...\n" + toString());
+        return m.insertar(mano.eliminarCartas(carta), fila, extremo);
     }
 
     /**
      * @author ivanr
      *
      *         Aqui leo la fila de la mesa en la que voy a insertar la/s carta/s
-     *
-     * @param fila
-     * @param repite
      * @return
      */
-    private int leerFila(int fila, boolean repite) {
-        do {
-            try {
-                repite = true;
-                fila = pideNumero("\nIntroduce una fila(1...4)");
-            } catch (NumberFormatException e) {
-                System.err.println("Introduce un entero");
-                repite = false;
-            }
-            if (fila < 1 || fila > 4) {
-                System.err.println("Fila incorrecta");
-                repite = false;
-            }
-        } while ((fila < 1 || fila > 4) || !repite);
+    private int leerFila() {
+        int fila = 0;
+        do {  
+            fila = ES.pideNumero("\nIntroduce una fila(1...4)");   
+        } while (fila < 1 || fila > 4);
 
-        fila--;
-        return fila;
+        return --fila;
     }
 
-    /**
-     * @author ivanr
-     *
-     *         Aqui leo el tipo de pajaro a insertar de mi mano a la mesa
-     *
-     * @param l
-     * @param s
-     * @param repite
-     * @param carta2
-     */
-    private Carta leerEspecie(List<Carta> l, List<Carta> s, boolean repite, Carta carta1, String cad) {
-        Carta carta2 = null;
-
-        anhadirTiposPajaros(l);
-        System.out.println("\t...Mostrando tipos de pajaros que tienes...\n");
-
-        for (int i = 0; i < mano.tiposParaJugador(l, s).size(); i++) {
-            System.out.println(mano.tiposParaJugador(l, s).get(i).toString());
-        }
-
-        do {
-            repite = false;
-            cad = pideCadena("\nIntroduce el tipo de pajaro que quieres meter en la fila");
-            for (int i = 0; i < mano.tiposParaJugador(l, s).size(); i++) {
-                carta1.setEspecie(cad);
-                if (carta1.getEspecie()
-                        .equals(mano.tiposParaJugador(l, s).get(i).getEspecie().replace("[", "").replace("]", ""))
-                        || carta1.getEspecie().equals(mano.tiposParaJugador(l, s).get(i).getEspecie().replace("[", "")
-                                .replace("]", "").toLowerCase())) {
-                    repite = true;
-                }
-            }
-            if (!repite) {
-                System.err.println("Tipo de pajaro incorrecto");
-            }
-        } while (!repite);
-        switch (cad) {
-            case "flamenco":
-                carta2 = new Carta("[Flamenco]", 2, 3);
-                break;
-            case "lechuza":
-                carta2 = new Carta("[Lechuza]", 3, 4);
-                break;
-            case "tucan":
-                carta2 = new Carta("[Tucan]", 3, 4);
-                break;
-            case "guacamayo":
-                carta2 = new Carta("[Guacamayo]", 4, 6);
-                break;
-            case "pato":
-                carta2 = new Carta("[Pato]", 4, 6);
-                break;
-            case "urraca":
-                carta2 = new Carta("[Urraca]", 5, 7);
-                break;
-            case "curruca de caña":
-                carta2 = new Carta("[Curruca de caña]", 6, 9);
-                break;
-            case "petirrojo":
-                carta2 = new Carta("[Petirrojo]", 6, 9);
-                break;
-            default:
-                System.out.println("No se encuentra pajaro");
-                break;
-        }
-
-        return carta2;
+    private Carta leerEspecie() {
+        int especie = 0;
+       do {
+           especie = ES.pideNumero("Introduce la especie: ");
+       } while (especie < 1 || especie > numCartasMano());
+       return mano.getCarta(especie - 1);
     }
 
     /**
@@ -230,26 +154,13 @@ public class Jugador {
      * @param extremo
      * @return
      */
-    private boolean leerExtremo(boolean repite, int num, boolean extremo) {
-
+    private boolean leerExtremo() {
+        int num = 0;
         do {
-            try {
-                repite = true;
-                num = pideNumero("\n¿Quieres poner la/s carta/s por la derecha(1) o por la izquierda(0)?");
-                if (num == 1) {
-                    extremo = true;
-                }
-            } catch (NumberFormatException e) {
-                System.err.println("Introduce un entero, cabezon");
-                repite = false;
-            }
-            if ((num < 0 || num > 1)) {
-                System.err.println("O 0 o 1 marica");
-                repite = false;
-            }
-        } while ((num < 0 || num > 1) || !repite);
+            num = ES.pideNumero("\nQuieres poner la/s carta/s por la izquierda(0) o por la derecha(1): ");
+        } while ((num < 0 || num > 1) );
 
-        return extremo;
+        return num == 1;
     }
 
     /**
@@ -263,7 +174,7 @@ public class Jugador {
      */
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(this.nombre);
 
         if (numCartasMano() == 1) {
             sb.append("\nTienes ").append(numCartasMano()).append(" carta en la mano: ").append("\n");
@@ -273,26 +184,15 @@ public class Jugador {
             sb.append(mano.toString()).append("\n");
         }
 
-        // if (numCartasZonaJuego() == 1) {
-        //     sb.append("\nTienes ").append(numCartasZonaJuego()).append(" carta en la zona de juego: ").append("\n");
-        //     sb.append(zonaJuego.toString()).append("\n");
-        // } else {
-        //     sb.append("\nTienes ").append(numCartasZonaJuego()).append(" cartas en la zona de juego: ").append("\n");
-        //     sb.append(zonaJuego.toString()).append("\n");
-        // }
+        if (numCartasZonaJuego() == 1) {
+            sb.append("\nTienes ").append(numCartasZonaJuego()).append(" carta en la zona de juego: ").append("\n");
+            sb.append(zonaJuego.toString()).append("\n");
+        } else {
+            sb.append("\nTienes ").append(numCartasZonaJuego()).append(" cartas en la zona de juego: ").append("\n");
+            sb.append(zonaJuego.toString()).append("\n");
+        }
 
         return sb.toString();
-    }
-
-    private void anhadirTiposPajaros(List<Carta> c) {
-        c.add(new Carta("[Flamenco]", 2, 3));
-        c.add(new Carta("[Lechuza]", 3, 4));
-        c.add(new Carta("[Tucan]", 3, 4));
-        c.add(new Carta("[Guacamayo]", 4, 6));
-        c.add(new Carta("[Pato]", 4, 6));
-        c.add(new Carta("[Urraca]", 5, 7));
-        c.add(new Carta("[Curruca de caña]", 6, 9));
-        c.add(new Carta("[Petirrojo]", 6, 9));
     }
 
     /*
@@ -320,25 +220,16 @@ public class Jugador {
         }
 
         public int getNumCartasDistintas() {
-            return getCartasDistintas().size();
+            return Jugador.getCartasDistintas(conjuntoCarta).size();
         }
 
-        public List<Carta> getCartasDistintas() {
-            List<Carta> toRet = new LinkedList<>();
-            for (Carta carta : conjuntoCarta) {
-                if (!toRet.contains(carta)) {
-                    toRet.add(carta);
-                }
-            }
-            return toRet;
-        }
 
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            List<Carta> cartas = getCartasDistintas();
+            List<Carta> cartas = Jugador.getCartasDistintas(conjuntoCarta);
             for (Carta carta : cartas) {
-                sb.append(carta).append(" ");
+                sb.append(carta).append(": ").append(Jugador.numCartasEspecie(carta, conjuntoCarta)).append("\n");
             }
             return sb.toString();
         }
@@ -407,13 +298,25 @@ public class Jugador {
             return toRet;
         }
 
+        public Carta getCarta(int pos){
+            return mano.get(pos);
+        }
+
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
             for (Carta carta : mano) {
                 sb.append(carta);
             }
+            return sb.toString();
+        }
 
+        public String toStringDistintas() {
+            StringBuilder sb = new StringBuilder();
+            List<Carta> cartas = Jugador.getCartasDistintas(mano);
+            for (Carta carta : cartas) {
+                sb.append(carta).append(": ").append(Jugador.numCartasEspecie(carta, mano)).append("\n");
+            }
             return sb.toString();
         }
     }

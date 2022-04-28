@@ -7,6 +7,7 @@ package es.uvigo.esei.cubirds.core;
 import javax.swing.text.html.FormView;
 
 public class Carta {
+
     public static final int[] numCartas = new int[]{20,7,20,10,13,17,10,13};
     public static final String[] especies = {"Curruca de caña","Flamenco","Petirrojo","Tucán","Pato","Urraca","Lechuza","Guacamayo"};
     public static final int[] bandadasP = {6,2,6,3,4,5,3,4};
@@ -43,12 +44,12 @@ public class Carta {
           return this.getEspecie().equals(toCompare.getEspecie());
         }
         return false;
-      }
+    }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(this.especie).append(" ").append(this.bandadaP).append("/").append(bandadaG);
         return sb.toString();
-    } 
+    }
 }

@@ -51,7 +51,7 @@ public class Mesa {
      * @param baraja
      * @return Devuelve las cartas rodeadas al introducir
      */
-    public List<Carta> insertar(List<Carta> carta, int fila, boolean extremo, Baraja baraja) {
+    public List<Carta> insertar(List<Carta> carta, int fila, boolean extremo) {
         List<Carta> toRet = cartasRodeadas(carta.get(0), fila, extremo);
         if (extremo) {
             mesa[fila].addAll(carta);
@@ -69,6 +69,7 @@ public class Mesa {
      * @return Devuelve las cartas que se encuentran entre una carta y la más
      *         proxima de esa especie por el correspondiente extremo
      */
+
     public List<Carta> cartasRodeadas(Carta carta, int fila, boolean extremo) {
         List<Carta> toRet = new LinkedList<>();
         if (mesa[fila].contains(carta)) {

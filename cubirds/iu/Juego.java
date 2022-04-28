@@ -3,6 +3,7 @@
  */
 package es.uvigo.esei.cubirds.iu;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import es.uvigo.esei.cubirds.core.*;
@@ -14,7 +15,10 @@ public class Juego {
         /// Leer jugadores:
         int numJugadores;
         do {
-            numJugadores = ES.pideNumero("Introduce el numero de jugadores:");
+            numJugadores = ES.pideNumero("Introduce el numero de jugadores (debe estar entre 2 y 5):");
+            if(numJugadores < 2 || numJugadores > 5){
+                System.out.println("El número de jugadores debe estar entre 2 y 5");
+            }
         } while (numJugadores < 2 || numJugadores > 5);
         Jugador[] jugadores = new Jugador[numJugadores];
         // Se crea la baraja
@@ -40,7 +44,7 @@ public class Juego {
             List<Carta> toAdd = actual.colocarMesa(baraja, mesa);
             System.out.println(toAdd);
             if(toAdd.size() == 0){
-                //Preguntar si coger 2 cartas
+                reponerCartas();
             }else{
                 actual.meterCartasMano(toAdd);
             }
@@ -71,6 +75,35 @@ public class Juego {
         // Si el jugador no es ganador, se comprueba si se ha quedado sin cartas
         // Se rellena la mesa
 
+    }
+
+    public static boolean reponerCartas(Jugador j, Baraja b) {
+        boolean toRet=false;
+        if(quiereReponer()){
+            if(){
+
+            }
+            else{
+                List<Carta> aux= new LinkedList<>();
+            for (int index = 0; index < 2; index++) {
+                aux.add(b.sacarCarta());
+            }
+            j.meterCartasMano(aux);
+        }
+        return toRet;
+    }
+
+    public static boolean quiereReponer() {
+        String s;
+        do {
+            s=ES.pideCadena("¿Quieres coger dos cartas?(S: si, N: no)");
+            if(!s.equalsIgnoreCase("s")&&!s.equalsIgnoreCase("n")){
+                System.out.println("Opción no válida.");
+            }
+        } while (!s.equalsIgnoreCase("s")&&!s.equalsIgnoreCase("n"));
+        
+        return s.equalsIgnoreCase("s");
+        
     }
 
 }

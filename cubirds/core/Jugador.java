@@ -31,7 +31,7 @@ public class Jugador {
      */
     public Jugador(Baraja b) {
         this.mano = new Mano(b);
-        this.zonaJuego = new ZonaJuego(b);
+        this.zonaJuego = new ZonaJuego();
     }
 
     /**
@@ -345,16 +345,18 @@ public class Jugador {
         
         public int getNumCartasDistintas()
         {
-            int toret=0;
-            for(String p: Carta.nombreCarta)
-            {
-                if(conjuntoCarta.buscar(new Carta(p,0,0)))
-                {
-                    toret++;
-                }
-            }
-            System.out.println("----"+toret+"------");
-            return toret;
+            return getCartasDistintas().size();
+        }
+        
+        public List<Carta> getCartasDistintas()
+        {
+           List<Carta> toRet = new LinkedList<>();
+           for (Carta carta : conjuntoCarta) {
+               if(!toRet.contains(carta)){
+                   toRet.add(carta);
+               }
+           }
+           return toRet;
         }
         
         @Override
@@ -437,8 +439,6 @@ public class Jugador {
             }else if(c.getEspecie().equals(Carta.especies[7]) && numeroCartasTipo(Carta.especies[7])==Carta.bandadasP[7]){
                 toRet = true;
             }
-
-            
                return toRet;
         }
         @Override

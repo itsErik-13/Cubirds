@@ -39,7 +39,7 @@ public class Juego {
             Jugador actual = jugadores[turno];
             System.out.println(mesa);
             System.out.println(actual);
-            Stack<Carta> toAdd = actual.colocarMesa(baraja, mesa);
+            Lista<Carta> toAdd = actual.colocarMesa(baraja, mesa);
             System.out.println(toAdd);
             if(toAdd.size() == 0){
                 reponerCartas(actual,baraja);

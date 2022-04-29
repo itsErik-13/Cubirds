@@ -64,7 +64,7 @@ public class Jugador {
      *
      * @param c
      */
-    public void meterCartasMano(Stack<Carta> c) {
+    public void meterCartasMano(Lista<Carta> c) {
         mano.anhadirCartas(c);
     }
 
@@ -280,19 +280,18 @@ public class Jugador {
             }
         }
 
-        public void anhadirCartas(Stack<Carta> c) {
-            while(!c.isEmpty()){
-                Carta card=c.pop();
-                if(estaEnMano(card)){
+        public void anhadirCartas(Lista<Carta> c) {
+            for(Carta i: c){
+                if(estaEnMano(i)){
                     for (Stack<Carta> s : mano) {
-                        if (s.peek().equals(card)) {
+                        if (s.peek().equals(i)) {
                             s.add(card);
                         }
                     }
                 }
                 else{
                     Stack<Carta> s = new Stack<>();
-                    s.add(card);
+                    s.add(i);
                     mano.add(s);
                 }
             }

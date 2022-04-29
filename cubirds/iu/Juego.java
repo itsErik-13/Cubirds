@@ -61,9 +61,9 @@ public class Juego {
         }
         if(jugadores[turno].especiesDistintasZonaJuego() >= 7){
             System.out.println("El ganador es: "+jugadores[turno]);
-            ganador=true;
         }else{
-            //Ganadores de palo
+            System.out.println(ganadoresNoCartas(jugadores));
+            
         }
 
         
@@ -137,4 +137,19 @@ public class Juego {
         
     }
 
+    public static List<Jugador> ganadoresNoCartas(Jugador[] j){
+        List <Jugador> toRet=new LinkedList<>();
+        int maxBandadas=Integer.MIN_VALUE;
+        for (int i = 0; i < j.size; i++) {
+            if(maxBandadas<j[i].especiesDistintasZonaJuego()){
+                toRet.clear();
+                maxBandadas=j[i].especiesDistintasZonaJuego();
+                toRet.add(j[i]);
+            }
+            else if(maxBandadas==j[i].especiesDistintasZonaJuego()){
+                toRet.add(j[i]);
+            }
+        }
+        return toRet;
+    }
 }

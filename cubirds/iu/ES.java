@@ -19,15 +19,22 @@ public class ES {
 
     public static int pideNumero(String mensaje) {
         
-        int toRet; boolean aux;
+        boolean esValido = false;
+        int toret = 0;
+        Scanner teclado = new Scanner(System.in);
+
         do {
+            System.out.print(mensaje);
+
             try {
-                toRet=Integer.parseInt(pideCadena(mensaje));
-                aux=true;
-            } catch (Exception e) {
-                aux=false;
+                toret = Integer.parseInt(teclado.nextLine());
+                esValido = true;
+            } catch (NumberFormatException exc) {
+                System.err.println("La cadena introducida no se puede "
+                        + "convertir a número entero. Por favor, "
+                        + "introdúcela de nuevo.");
             }
-        } while (!aux);
-        return Integer.parseInt(leer.nextLine());
+        } while (!esValido);
+        return toret;
     }
 }

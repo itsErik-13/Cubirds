@@ -33,7 +33,6 @@ public class Juego {
         }
         Mesa mesa = new Mesa();
         mesa.colocarMesaInicial(baraja);
-        System.out.println(mesa);
 
         int turno = (int)(Math.random()*numJugadores);
 
@@ -42,25 +41,27 @@ public class Juego {
         while(!ganador){
             turno = ++turno % numJugadores;
             Jugador actual = jugadores[turno];
+            System.out.println(mesa);
             System.out.println(actual);
             List<Carta> toAdd = actual.colocarMesa(baraja, mesa);
             System.out.println(toAdd);
             if(toAdd.size() == 0){
-                reponerCartas();
+                reponerCartas(actual,baraja);
             }else{
                 actual.meterCartasMano(toAdd);
             }
             if(actual.numCartasMano() == 0){
-                
+                reponerMano(actual, baraja);
             }
             System.out.println(actual);
             if(!mesa.rellenar(baraja)){
-                
+            
             }
-           
+            
         }
         if(jugadores[turno].especiesDistintasZonaJuego() >= 7){
-            //Ganador de verdad
+            System.out.println("El ganador es: "+jugadores[turno]);
+            ganador=true;
         }else{
             //Ganadores de palo
         }
@@ -79,7 +80,7 @@ public class Juego {
 
     }
 
-    public static boolean reponerCartas(Jugador j, Baraja b) {
+    public static boolean reponerMano(Jugador j, Baraja b) {
         boolean toRet=true;
         if(quiereReponer()){
             if(b.size()<2){
@@ -94,7 +95,33 @@ public class Juego {
             j.meterCartasMano(aux);
         }
         }
+        else{
+            if(b.size<8){
+                toRet=false;
+            }
+            else{
+                List<Carta> aux= new LinkedList<>();
+                for (int index = 0; index <8; index++) {
+                    aux.add(b.sacarCarta());
+                }
+                j.meterCartasMano(aux);
+            }
+        }
         return toRet;
+    }
+
+    public static boolean reponerCartas(Jugador j, Baraja b) {
+        boolean toRet=true;
+        if (b.size()<2) {
+            toRet=false;
+        } else {
+            List<Carta> aux= new LinkedList<>();
+            for (int index = 0; index < 2; index++) {
+                aux.add(b.sacarCarta());
+            }
+            j.meterCartasMano(aux);
+        } 
+        return toRet; 
     }
 
     public static boolean quiereReponer() {

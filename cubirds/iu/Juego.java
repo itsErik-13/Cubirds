@@ -6,6 +6,8 @@ package es.uvigo.esei.cubirds.iu;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.sql.rowset.serial.SerialException;
+
 import es.uvigo.esei.cubirds.core.*;
 
 public class Juego {
@@ -55,7 +57,7 @@ public class Juego {
             if(!mesa.rellenar(baraja)){
                 
             }
-            ganador = true;
+           
         }
         if(jugadores[turno].especiesDistintasZonaJuego() >= 7){
             //Ganador de verdad
@@ -78,17 +80,19 @@ public class Juego {
     }
 
     public static boolean reponerCartas(Jugador j, Baraja b) {
-        boolean toRet=false;
+        boolean toRet=true;
         if(quiereReponer()){
-            if(){
-
+            if(b.size()<2){
+                toRet=false;
             }
             else{
                 List<Carta> aux= new LinkedList<>();
             for (int index = 0; index < 2; index++) {
                 aux.add(b.sacarCarta());
             }
+
             j.meterCartasMano(aux);
+        }
         }
         return toRet;
     }

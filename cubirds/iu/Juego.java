@@ -15,13 +15,8 @@ public class Juego {
     public static void inicio() throws InterruptedException {
 
         /// Leer jugadores:
-        int numJugadores;
-        do {
-            numJugadores = ES.pideNumero("Introduce el numero de jugadores (debe estar entre 2 y 5):");
-            if(numJugadores < 2 || numJugadores > 5){
-                System.out.println("El número de jugadores debe estar entre 2 y 5");
-            }
-        } while (numJugadores < 2 || numJugadores > 5);
+        int numJugadores=leeNumJugadores();
+        
         Jugador[] jugadores = new Jugador[numJugadores];
         // Se crea la baraja
         Baraja baraja = new Baraja();
@@ -31,6 +26,7 @@ public class Juego {
         for (int i = 0; i < numJugadores; i++) {
             jugadores[i] = new Jugador(ES.pideCadena("Introduce el nombre del jugador " + (i + 1) + ":"),baraja);
         }
+
         Mesa mesa = new Mesa();
         mesa.colocarMesaInicial(baraja);
 
@@ -43,7 +39,7 @@ public class Juego {
             Jugador actual = jugadores[turno];
             System.out.println(mesa);
             System.out.println(actual);
-            List<Carta> toAdd = actual.colocarMesa(baraja, mesa);
+            Stack<Carta> toAdd = actual.colocarMesa(baraja, mesa);
             System.out.println(toAdd);
             if(toAdd.size() == 0){
                 reponerCartas(actual,baraja);
@@ -57,6 +53,7 @@ public class Juego {
             if(!mesa.rellenar(baraja)){
             
             }
+            ganador=true;
             
         }
         if(jugadores[turno].especiesDistintasZonaJuego() >= 7){
@@ -87,9 +84,9 @@ public class Juego {
                 toRet=false;
             }
             else{
-                List<Carta> aux= new LinkedList<>();
+                Stack<Carta> aux= new Stack<>();
             for (int index = 0; index < 2; index++) {
-                aux.add(b.sacarCarta());
+                aux.push(b.sacarCarta());
             }
 
             j.meterCartasMano(aux);
@@ -100,9 +97,9 @@ public class Juego {
                 toRet=false;
             }
             else{
-                List<Carta> aux= new LinkedList<>();
+                Stack<Carta> aux= new Stack<>();
                 for (int index = 0; index <8; index++) {
-                    aux.add(b.sacarCarta());
+                    aux.push(b.sacarCarta());
                 }
                 j.meterCartasMano(aux);
             }
@@ -115,9 +112,9 @@ public class Juego {
         if (b.size()<2) {
             toRet=false;
         } else {
-            List<Carta> aux= new LinkedList<>();
+            Stack<Carta> aux= new Stack<>();
             for (int index = 0; index < 2; index++) {
-                aux.add(b.sacarCarta());
+                aux.push(b.sacarCarta());
             }
             j.meterCartasMano(aux);
         } 
@@ -151,5 +148,18 @@ public class Juego {
             }
         }
         return toRet;
+    }
+
+    public static int leeNumJugadores(){
+        int toRet;
+        do {
+            toRet = ES.pideNumero("Introduce el numero de jugadores (debe estar entre 2 y 5):");
+            if(numJugadores < 2 || numJugadores > 5){
+                System.out.println("El número de jugadores debe estar entre 2 y 5");
+            }
+        } while (numJugadores < 2 || numJugadores > 5);
+
+        return toRet;
+
     }
 }

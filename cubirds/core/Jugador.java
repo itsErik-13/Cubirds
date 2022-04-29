@@ -123,7 +123,7 @@ public class Jugador {
         do {
             fila = ES.pideNumero("\nIntroduce una fila(1...4)");
         } while (fila < 1 || fila > 4);
-
+        
         return --fila;
     }
 

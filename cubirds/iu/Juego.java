@@ -41,10 +41,18 @@ public class Juego {
             System.out.println(baraja.size());
             System.out.println(mesa);
             System.out.println(actual);
+<<<<<<< HEAD
             List<Carta> toAdd = actual.colocarMesa(baraja, mesa);
             if (toAdd.size() == 0) {
                 reponerCartas(actual, baraja);
             } else {
+=======
+            Lista<Carta> toAdd = actual.colocarMesa(baraja, mesa);
+            System.out.println(toAdd);
+            if(toAdd.size() == 0){
+                reponerCartas(actual,baraja);
+            }else{
+>>>>>>> a51d55b129f5f16f945de0ce869d4c2d14677256
                 actual.meterCartasMano(toAdd);
             }
             md.addDescarte(actual.bajarCartasZonaJuego());

@@ -12,13 +12,11 @@
  */
 package es.uvigo.esei.cubirds.core;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
 import es.uvigo.esei.cubirds.iu.ES;
-
-import java.util.Iterator;
-import java.util.LinkedList;
 
 public class Jugador {
 
@@ -30,16 +28,27 @@ public class Jugador {
         int cont = 0;
         for (Stack<Carta> q : conjunto) {
             if (q.peek().equals(c))
-                cont++;
+                cont = q.size();
         }
         return cont;
     }
 
     public static List<Carta> getCartasDistintas(List<Stack<Carta>> conjuntoCarta) {
         List<Carta> toRet = new LinkedList<>();
-        for (Stack<Carta> q : conjunto) {
-            if (!toRet.contains(q.peek()))
+        for (Stack<Carta> q : conjuntoCarta) {
                 toRet.add(q.peek());
+        }
+        return toRet;
+    }
+
+    public static boolean entaEnConjuntoPilas(Carta carta, List<Stack<Carta>> conjunto) {
+        boolean toRet = false;
+        for (Stack<Carta> i : conjunto) {
+            if (!i.isEmpty()) {
+                if (i.peek().equals(carta)) {
+                    toRet = true;
+                }
+            }
         }
         return toRet;
     }
@@ -64,7 +73,7 @@ public class Jugador {
      *
      * @param c
      */
-    public void meterCartasMano(Stack<Carta> c) {
+    public void meterCartasMano(List<Carta> c) {
         mano.anhadirCartas(c);
     }
 
@@ -95,8 +104,42 @@ public class Jugador {
         return zonaJuego.getNumCartas();
     }
 
+    /**
+     * 
+     * @return Se devuelven las cartas que pasaran al monton de descartes
+     */
+    public Stack<Carta> bajarCartasZonaJuego(){
+        Stack<Carta> toRet = new Stack<>();
+        if(mano.bandadaPequenha()){
+            int cont = 1;
+            List<Carta> posibilidades = mano.posibilidadesBandadas();
+            System.out.println("Puede bajar las siguientes especies a la zona de juego: ");
+            for (Carta carta : posibilidades) {
+                System.out.println("   -" + cont + "." + carta);
+            }
+            if(quiereBajarCartas()){
+                Carta aBajar = leerEspecie(posibilidades);
+                toRet = quitarCartasMano(aBajar);
+                zonaJuego.insertarCarta(toRet.pop());
+            }
+        }
+        return toRet;
+    }
+
+    public boolean quiereBajarCartas(){
+        String s;
+        do {
+            s = ES.pideCadena("¿Quieres bajar cartas a la zona de juego?(S: si, N: no)");
+            if (!s.equalsIgnoreCase("s") && !s.equalsIgnoreCase("n")) {
+                System.out.println("Opción no válida.");
+            }
+        } while (!s.equalsIgnoreCase("s") && !s.equalsIgnoreCase("n"));
+
+        return s.equalsIgnoreCase("s");
+    }
+
     public int especiesDistintasZonaJuego() {
-        return zonaJuego.getNumCartasDistintas();
+        return zonaJuego.getNumEspeciesZonaJuego();
     }
 
     /**
@@ -107,11 +150,11 @@ public class Jugador {
      * @param b
      * @param m
      */
-    public Stack<Carta> colocarMesa(Baraja b, Mesa m) {
-        Carta carta = leerEspecie();
+    public List<Carta> colocarMesa(Baraja b, Mesa m) {
+        Carta carta = leerEspecie(getCartasDistintas(mano.mano));
         int fila = leerFila();
         boolean extremo = leerExtremo();
-        return m.insertar(mano.eliminarCartas(carta), fila, extremo);
+        return m.insertar(quitarCartasMano(carta), fila, extremo);
     }
 
     /**
@@ -129,13 +172,12 @@ public class Jugador {
         return --fila;
     }
 
-    private Carta leerEspecie() {
-        List<Carta> cartasDistintas = Jugador.getCartasDistintas(mano.mano);
+    private Carta leerEspecie(List<Carta> lista) {
         int especie = 0;
         do {
-            especie = ES.pideNumero("Introduce la especie: ");
-        } while (especie < 1 || especie > cartasDistintas.size());
-        return cartasDistintas.get(especie - 1);
+            especie = ES.pideNumero("Introduce la especie (): " + "(1-" + lista.size() + ")");
+        } while (especie < 1 || especie > lista.size());
+        return lista.get(especie - 1);
     }
 
     /**
@@ -201,40 +243,47 @@ public class Jugador {
      * - mostrar zona de juego
      */
     private static class ZonaJuego {
-        private List<Carta> conjuntoCarta;
+        private List<Stack<Carta>> zonaJuego;
 
         public ZonaJuego(Carta carta) {
-            conjuntoCarta = new LinkedList<>();
+            zonaJuego = new LinkedList<>();
             insertarCarta(carta);
         }
 
         public void insertarCarta(Carta c) {
-            conjuntoCarta.add(c);
+            if(Jugador.entaEnConjuntoPilas(c,zonaJuego)){
+                for (Stack<Carta> s : zonaJuego) {
+                    if (s.peek().equals(c)) {
+                        s.add(c);
+                    }
+                }
+            }
+            else{
+                Stack<Carta> s = new Stack<>();
+                s.add(c);
+                zonaJuego.add(s);
+            }
         }
 
         public int getNumCartas() {
-            return conjuntoCarta.size();
+            int cont = 0;
+            for (Stack<Carta> s : zonaJuego) {
+                cont += s.size();
+            }
+            return cont;
         }
 
-        public int getNumCartasDistintas() {
-            return Jugador.getCartasDistintas(conjuntoCarta).size();
+        public int getNumEspeciesZonaJuego() {
+            return zonaJuego.size();
         }
 
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            List<Carta> cartas = Jugador.getCartasDistintas(conjuntoCarta);
+            List<Carta> cartas = Jugador.getCartasDistintas(zonaJuego);
             for (Carta carta : cartas) {
-                sb.append("   ·").append(carta).append(": ").append(Jugador.numCartasEspecie(carta, conjuntoCarta))
+                sb.append("   ·").append(carta).append(": ").append(Jugador.numCartasEspecie(carta, zonaJuego))
                         .append("\n");
-            }
-            return sb.toString();
-        }
-
-        public String toStringRepetidos() {
-            StringBuilder sb = new StringBuilder();
-            for (Carta carta : conjuntoCarta) {
-                sb.append("   ·").append(carta).append(" ");
             }
             return sb.toString();
         }
@@ -255,6 +304,7 @@ public class Jugador {
         private List<Stack<Carta>> mano;
 
         public Mano(Baraja b) {
+            mano = new LinkedList<>();
             cogerCartas(b);
         }
 
@@ -262,28 +312,29 @@ public class Jugador {
             if (b.size() < 8) {
                 return false;
             } else {
-                Carta card = b.sacarCarta();
                 for (int i = 0; i < 8; i++) {
-                    if (mano.isEmpty() || !estaEnMano(card)) {
-                        Stack<Carta> c = new Stack<>();
-                        c.add(card);
-                        mano.add(c);
-                    } else {
+                    Carta card = b.sacarCarta();
+                    if (Jugador.entaEnConjuntoPilas(card,mano)) {
                         for (Stack<Carta> s : mano) {
                             if (s.peek().equals(card)) {
                                 s.add(card);
                             }
                         }
+                    } else {
+                        Stack<Carta> c = new Stack<>();
+                        c.add(card);
+                        mano.add(c);
                     }
                 }
                 return true;
             }
         }
 
-        public void anhadirCartas(Stack<Carta> c) {
+        public void anhadirCartas(List<Carta> c) {
             while(!c.isEmpty()){
-                Carta card=c.pop();
-                if(estaEnMano(card)){
+                Carta card=c.get(0);
+                c.remove(card);
+                if(Jugador.entaEnConjuntoPilas(card,mano)){
                     for (Stack<Carta> s : mano) {
                         if (s.peek().equals(card)) {
                             s.add(card);
@@ -300,18 +351,18 @@ public class Jugador {
 
         public Stack<Carta> eliminarCartas(Carta carta) {
             Stack<Carta> toRet = new Stack<>();
-            for (Stack<Carta> c : mano.mano) {
-                if (c.peek().equals(carta)) {
+            for (Stack<Carta> c : mano) {
+                if (c.contains(carta)) {
                     toRet = c;
-                    mano.remove(c);
                 }
             }
+            mano.remove(toRet);
             return toRet;
         }
 
         public int numeroCartas() {
             int cont = 0;
-            for (Stack<Carta> i : mano.mano) {
+            for (Stack<Carta> i : mano) {
                 cont += i.size();
             }
             return cont;
@@ -323,43 +374,25 @@ public class Jugador {
 
         public List<Carta> posibilidadesBandadas() {
             List<Carta> a = new LinkedList<>();
-            for (Stack<Carta> c : mano.mano) {
-                if (!a.contains(c.peek()) && c.size() >= c.peek.bandadaPequenha()) {
+            for (Stack<Carta> c : mano) {
+                if (!a.contains(c.peek()) && c.size() >= c.peek().getBandadaP()) {
                     a.add(c.peek());
                 }
             }
             return a;
         }
 
-        public boolean estaEnMano() {
-            boolean toRet = false;
-            for (Stack<Carta> i : mano.mano) {
-                if (!i.isEmpty()) {
-                    if (i.peek().equals(carta)) {
-                        toRet = true;
-                    }
-                }
-            }
-            return toRet;
-        }
-
+        
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
+            int cont = 1;
             List<Carta> cartas = Jugador.getCartasDistintas(mano);
             for (Carta carta : cartas) {
-                sb.append("   ·").append(carta).append(": ").append(Jugador.numCartasEspecie(carta, mano)).append("\n");
+                sb.append("   -").append(cont).append('.').append(carta).append(": ").append(Jugador.numCartasEspecie(carta, mano)).append("\n");
+                cont++;
             }
             return sb.toString();
         }
-
-        public String toStringDistintas() {
-            StringBuilder sb = new StringBuilder();
-            for (Carta carta : mano.mano) {
-                sb.append("   ·").append(carta);
-            }
-            return sb.toString();
-        }
-
     }
 }

@@ -10,6 +10,7 @@
 package es.uvigo.esei.cubirds.core;
 
 import java.util.List;
+import java.util.Stack;
 import java.util.LinkedList;
 
 public class Mesa {
@@ -18,7 +19,7 @@ public class Mesa {
     private List<Carta>[] mesa;
 
     public Mesa() {
-        this.mesa = new LinkedList[MAX_FILAS];
+        this.mesa = new List[MAX_FILAS];
         for (int i = 0; i < mesa.length; i++) {
             mesa[i] = new LinkedList<>();
         }
@@ -51,8 +52,8 @@ public class Mesa {
      * @param baraja
      * @return Devuelve las cartas rodeadas al introducir
      */
-    public Stack<Carta> insertar(Stack<Carta> carta, int fila, boolean extremo) {
-        Stack<Carta> toRet = cartasRodeadas(carta.peek(), fila, extremo);
+    public List<Carta> insertar(Stack<Carta> carta, int fila, boolean extremo) {
+        List<Carta> toRet = cartasRodeadas(carta.peek(), fila, extremo);
         if (extremo) {
             mesa[fila].addAll(carta);
         } else {
@@ -70,8 +71,7 @@ public class Mesa {
      *         proxima de esa especie por el correspondiente extremo
      */
 
-     //Cambiar para que devuelva un stack
-    public Stack<Carta> cartasRodeadas(Carta carta, int fila, boolean extremo) {
+    public List<Carta> cartasRodeadas(Carta carta, int fila, boolean extremo) {
         List<Carta> toRet = new LinkedList<>();
         if (mesa[fila].contains(carta)) {
             if (extremo) {

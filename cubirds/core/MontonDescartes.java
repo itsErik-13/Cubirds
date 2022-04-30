@@ -18,16 +18,7 @@ public class MontonDescartes {
      * @param carta
      * @param numCartas
      */
-    public void addDescarte(Carta carta,int numCartas){
-        for (int i = 0; i < numCartas; i++) {
-            descartes.push(carta);
-        }
-    }
-    /**
-     * Añade la carta pasada como parámetro al montón de descartes
-     * @param carta 
-     */
-    public void addDescarte(Carta carta){
-        descartes.push(carta);
+    public void addDescarte(Stack<Carta> cartas){
+        descartes.addAll(cartas);
     }
 }

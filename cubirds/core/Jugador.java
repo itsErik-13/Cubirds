@@ -73,11 +73,7 @@ public class Jugador {
      *
      * @param c
      */
-<<<<<<< HEAD
     public void meterCartasMano(List<Carta> c) {
-=======
-    public void meterCartasMano(Lista<Carta> c) {
->>>>>>> a51d55b129f5f16f945de0ce869d4c2d14677256
         mano.anhadirCartas(c);
     }
 
@@ -334,26 +330,20 @@ public class Jugador {
             }
         }
 
-<<<<<<< HEAD
         public void anhadirCartas(List<Carta> c) {
             while(!c.isEmpty()){
                 Carta card=c.get(0);
                 c.remove(card);
                 if(Jugador.entaEnConjuntoPilas(card,mano)){
-=======
-        public void anhadirCartas(Lista<Carta> c) {
-            for(Carta i: c){
-                if(estaEnMano(i)){
->>>>>>> a51d55b129f5f16f945de0ce869d4c2d14677256
                     for (Stack<Carta> s : mano) {
-                        if (s.peek().equals(i)) {
+                        if (s.peek().equals(card)) {
                             s.add(card);
                         }
                     }
                 }
                 else{
                     Stack<Carta> s = new Stack<>();
-                    s.add(i);
+                    s.add(card);
                     mano.add(s);
                 }
             }

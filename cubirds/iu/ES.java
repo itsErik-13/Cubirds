@@ -22,13 +22,12 @@ public class ES {
         
         boolean esValido = false;
         int toret = 0;
-        Scanner teclado = new Scanner(System.in);
 
         do {
             System.out.print(mensaje);
 
             try {
-                toret = Integer.parseInt(teclado.nextLine());
+                toret = Integer.parseInt(leer.nextLine());
                 esValido = true;
             } catch (NumberFormatException exc) {
                 System.err.println("La cadena introducida no se puede "

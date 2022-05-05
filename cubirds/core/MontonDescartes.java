@@ -13,6 +13,7 @@ public class MontonDescartes {
     public MontonDescartes(){
         descartes = new Stack<>();
     }
+    
     /**
      * Añade numCartas unidades de la carta pasada como parámetro al montón de descartes
      * @param carta

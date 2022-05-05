@@ -122,14 +122,17 @@ public class Mesa {
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder("Mesa: \n");
+        StringBuilder sb = new StringBuilder("\nMesa: \n");
+        sb.append(Jugador.ANSI_YELLOW);
         for (int i = 0; i < MAX_FILAS; i++) {
             for (Carta carta : mesa[i]) {
                 sb.append(carta);
-                sb.append(carta.getEspecie().equals("Curruca de caña") ? "\t" : "\t\t");
+                //sb.append(carta.getEspecie().equals("Curruca de caña") ? "\t" : "\t\t");
+                sb.append(' ');
             }
             sb.append("\n");
         }
+        sb.append(Jugador.ANSI_RESET);
         return sb.toString();
     }
 

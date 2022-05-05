@@ -46,10 +46,17 @@ public class Carta {
         return false;
     }
 
+    
+    public String toStringEntero() {
+        String toRet = String.format("[%-15s %d/%d]", this.getEspecie(),this.getBandadaP(),this.getBandadaG());
+        
+        return toRet;
+    }
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(this.especie).append(" ").append(this.bandadaP).append("/").append(bandadaG);
-        return sb.toString();
+        String toRet = String.format("[%-15s]",this.getEspecie());
+        
+        return toRet;
     }
 }

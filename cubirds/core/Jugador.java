@@ -19,6 +19,12 @@ import java.util.Stack;
 import es.uvigo.esei.cubirds.iu.ES;
 
 public class Jugador {
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
 
     private String nombre;
     private Mano mano;
@@ -201,6 +207,10 @@ public class Jugador {
         return num == 1;
     }
 
+    public String getNombre(){
+        return nombre;
+    }
+
     /**
      * @author ivanr
      *
@@ -279,12 +289,13 @@ public class Jugador {
 
         @Override
         public String toString() {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder(ANSI_RED);
             List<Carta> cartas = Jugador.getCartasDistintas(zonaJuego);
             for (Carta carta : cartas) {
                 sb.append("   ·").append(carta).append(": ").append(Jugador.numCartasEspecie(carta, zonaJuego))
                         .append("\n");
             }
+            sb.append(ANSI_RESET);
             return sb.toString();
         }
     }
@@ -385,13 +396,14 @@ public class Jugador {
         
         @Override
         public String toString() {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder(ANSI_BLUE);
             int cont = 1;
             List<Carta> cartas = Jugador.getCartasDistintas(mano);
             for (Carta carta : cartas) {
-                sb.append("   -").append(cont).append('.').append(carta).append(": ").append(Jugador.numCartasEspecie(carta, mano)).append("\n");
+                sb.append("   -").append(cont).append('.').append(carta.toStringEntero()).append(": ").append(Jugador.numCartasEspecie(carta, mano)).append("\n");
                 cont++;
             }
+            sb.append(ANSI_RESET);
             return sb.toString();
         }
     }

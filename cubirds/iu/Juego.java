@@ -23,7 +23,7 @@ public class Juego {
         MontonDescartes md = new MontonDescartes();
         // Se crean los jugadores
         for (int i = 0; i < numJugadores; i++) {
-            jugadores[i] = new Jugador(ES.pideCadena("Introduce el nombre del jugador " + (i + 1) + ":"), baraja);
+            jugadores[i] = new Jugador(ES.pideCadena("\nIntroduce el nombre del jugador " + (i + 1) + ":"), baraja);
         }
 
         Mesa mesa = new Mesa();
@@ -36,7 +36,6 @@ public class Juego {
         while (!ganador) {
             turno = ++turno % numJugadores;
             Jugador actual = jugadores[turno];
-            System.out.println(baraja.size());
             System.out.println(mesa);
             System.out.println(actual);
             List<Carta> toAdd = actual.colocarMesa(baraja, mesa);
@@ -59,9 +58,9 @@ public class Juego {
 
         }
         if (jugadores[turno].especiesDistintasZonaJuego() >= 7) {
-            System.out.println("El ganador es: " + jugadores[turno]);
+            System.out.println(Jugador.ANSI_GREEN +"El ganador es: " + jugadores[turno] + Jugador.ANSI_RESET);
         } else {
-            System.out.println(ganadoresNoCartas(jugadores));
+            ganadoresNoCartas(jugadores);
         }
 
         // Se reparten las cartas
@@ -119,7 +118,7 @@ public class Juego {
         return s.equalsIgnoreCase("s");
     }
 
-    public static List<Jugador> ganadoresNoCartas(Jugador[] j) {
+    public static void ganadoresNoCartas(Jugador[] j) {
         List<Jugador> toRet = new LinkedList<>();
         int maxBandadas = Integer.MIN_VALUE;
         for (int i = 0; i < j.length; i++) {
@@ -131,7 +130,11 @@ public class Juego {
                 toRet.add(j[i]);
             }
         }
-        return toRet;
+        System.out.println(Jugador.ANSI_PURPLE + "Ganador/es: ");
+        for (Jugador jugador : toRet) {
+            System.out.println(Jugador.ANSI_PURPLE + "\t-" +jugador.getNombre());
+        }
+        System.out.println(Jugador.ANSI_RESET);
     }
 
     public static int leeNumJugadores() {

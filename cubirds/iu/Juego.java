@@ -19,16 +19,20 @@ public class Juego {
         Jugador[] jugadores = new Jugador[numJugadores];
         // Se crea la baraja
         Baraja baraja = new Baraja();
+
         // Se crea el montón de descartes
         MontonDescartes md = new MontonDescartes();
-        // Se crean los jugadores
+
+        // Se crean los jugadores y reparten las cartas
         for (int i = 0; i < numJugadores; i++) {
             jugadores[i] = new Jugador(ES.pideCadena("\nIntroduce el nombre del jugador " + (i + 1) + ":"), baraja);
         }
 
+        // Se crea la mesa inicial
         Mesa mesa = new Mesa();
         mesa.colocarMesaInicial(baraja);
 
+        // Se elige el jugador que empezará el juego
         int turno = (int) (Math.random() * numJugadores);
 
         boolean ganador = false;
@@ -36,42 +40,50 @@ public class Juego {
         while (!ganador) {
             turno = ++turno % numJugadores;
             Jugador actual = jugadores[turno];
+
+            // Se visualiza la mesa y los datos del jugador que va a jugar
             System.out.println(mesa);
             System.out.println(actual);
+            
+            // El jugador coloca las cartas en la mesa y recibe las que están rodeadas
             List<Carta> toAdd = actual.colocarMesa(baraja, mesa);
+
+            // Si no recoge cartas se le permite tomar 2 de la baraja.
             if (toAdd.size() == 0) {
                 reponerCartas(actual, baraja);
             } else {
                 actual.meterCartasMano(toAdd);
             }
+
+            // Se mira si el jugador puede bajar cartas a la zona de juego, de ser así se inserta 1 en la zona de juego y el resto en md.
             md.addDescarte(actual.bajarCartasZonaJuego());
+
+            // Se comprueba si el jugador ya tiene las 7 especies distintas necesarias para ganar el juego
             if(actual.especiesDistintasZonaJuego() >=7){
                 ganador = true;
             }
+
+            // Si tiene 0 cartas se intenta reponer con 8, de no ser posible se termina la partida
             if (actual.numCartasMano() == 0 && !reponerMano(actual, baraja)) {
                 ganador = true;
             }
+
+            // Se muestran los datos actualizados del jugador
             System.out.println(actual);
+
+            // Se rellena la mesa de ser necesario, si no es posible se termina el juego
             if (!mesa.rellenar(baraja)) {
                 ganador = true;
             }
 
         }
+
+        // Se comprueba quién ha ganado la partida
         if (jugadores[turno].especiesDistintasZonaJuego() >= 7) {
             System.out.println(Jugador.ANSI_GREEN +"El ganador es: " + jugadores[turno] + Jugador.ANSI_RESET);
         } else {
             ganadoresNoCartas(jugadores);
         }
-
-        // Se reparten las cartas
-
-        // Empieza el juego
-
-        // Jugador coloca en la mesa
-        // Se comprueba si el jugador se ha quedado sin cartas
-        // Se pregunta si quiere colocar cartas en la zona de juego
-        // Si el jugador no es ganador, se comprueba si se ha quedado sin cartas
-        // Se rellena la mesa
 
     }
 

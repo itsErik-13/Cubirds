@@ -19,17 +19,26 @@ import java.util.Stack;
 import es.uvigo.esei.cubirds.iu.ES;
 
 public class Jugador {
+
+    //Colores: 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
 
     private String nombre;
     private Mano mano;
     private ZonaJuego zonaJuego;
 
+    /**
+     * 
+     * @param c
+     * @param conjunto
+     * @return Devuelve el numero de cartas que hay de la especie c en el conjunto.
+     */
     public static int numCartasEspecie(Carta c, List<Stack<Carta>> conjunto) {
         int cont = 0;
         for (Stack<Carta> q : conjunto) {
@@ -39,6 +48,11 @@ public class Jugador {
         return cont;
     }
 
+    /**
+     * 
+     * @param conjuntoCarta
+     * @return Devuelve el numero de especies de un conjunto
+     */
     public static List<Carta> getCartasDistintas(List<Stack<Carta>> conjuntoCarta) {
         List<Carta> toRet = new LinkedList<>();
         for (Stack<Carta> q : conjuntoCarta) {
@@ -47,6 +61,12 @@ public class Jugador {
         return toRet;
     }
 
+    /**
+     * 
+     * @param carta
+     * @param conjunto
+     * @return Retorna cierto si la carta está en el conjunto y falso en caso contrario
+     */
     public static boolean entaEnConjuntoPilas(Carta carta, List<Stack<Carta>> conjunto) {
         boolean toRet = false;
         for (Stack<Carta> i : conjunto) {
@@ -60,23 +80,19 @@ public class Jugador {
     }
 
     /**
-     * @author ivanr
-     *
-     *         Crea un jugador con su mano y su zona de juego
-     *
+     * 
+     * @param nombre
      * @param b
+     * Crea al jugador
      */
     public Jugador(String nombre, Baraja b) {
         this.nombre = nombre;
         this.mano = new Mano(b);
         this.zonaJuego = new ZonaJuego(b.sacarCarta());
     }
-
+    
     /**
-     * @author ivanr
-     *
-     *         Mete una lista de cartas a la mano
-     *
+     * Introduce cartas en la mano
      * @param c
      */
     public void meterCartasMano(List<Carta> c) {
@@ -84,12 +100,9 @@ public class Jugador {
     }
 
     /**
-     * @author ivanr
-     *
-     *         Saca una lista de cartas de la mano
-     *
+     * 
      * @param c
-     * @return
+     * @return Devuelve la pila de cartas que se quita de la mano
      */
     public Stack<Carta> quitarCartasMano(Carta c) {
         return mano.eliminarCartas(c);
@@ -97,9 +110,7 @@ public class Jugador {
 
     /**
      * @author ivanr
-     *
-     *         Devuelve el numero de cartas en la mano
-     *
+     * Devuelve el numero de cartas en la mano
      * @return
      */
     public int numCartasMano() {
@@ -111,8 +122,8 @@ public class Jugador {
     }
 
     /**
-     * 
-     * @return Se devuelven las cartas que pasaran al monton de descartes
+     * Introduce cartas en la zona de juego (si el jugador quiere)
+     * @return Devuelve la pila que se va a introducir en el montón de descartes
      */
     public Stack<Carta> bajarCartasZonaJuego(){
         Stack<Carta> toRet = new Stack<>();
@@ -132,6 +143,10 @@ public class Jugador {
         return toRet;
     }
 
+    /**
+     * 
+     * @return Devuelve cierto si el jugador quiere bajar cartas y falso en caso contrario
+     */
     public boolean quiereBajarCartas(){
         String s;
         do {
@@ -144,17 +159,19 @@ public class Jugador {
         return s.equalsIgnoreCase("s");
     }
 
+    /**
+     * 
+     * @return Devuelve el numero de especies distintas de la zona juego
+     */
     public int especiesDistintasZonaJuego() {
         return zonaJuego.getNumEspeciesZonaJuego();
     }
 
     /**
-     * @author ivanr
-     *
-     *         Coloca una o varias cartas en la mesa
-     *
+     * 
      * @param b
      * @param m
+     * @return Introduce cartas en la mesa y retorna las cartas rodeadas
      */
     public List<Carta> colocarMesa(Baraja b, Mesa m) {
         Carta carta = leerEspecie(getCartasDistintas(mano.mano));
@@ -164,10 +181,8 @@ public class Jugador {
     }
 
     /**
-     * @author ivanr
-     *
-     *         Aqui leo la fila de la mesa en la que voy a insertar la/s carta/s
-     * @return
+     * 
+     * @return Retorna la fila en la que se quiere insertar la mesa
      */
     private int leerFila() {
         int fila = 0;
@@ -178,6 +193,11 @@ public class Jugador {
         return --fila;
     }
 
+    /**
+     * 
+     * @param lista
+     * @return Retorna la especie que se quiere insertar en la mesa
+     */
     private Carta leerEspecie(List<Carta> lista) {
         int especie = 0;
         do {
@@ -187,16 +207,8 @@ public class Jugador {
     }
 
     /**
-     * @author ivanr
-     *
-     *         Aqui leo el extremo (que esta en la fila escogida de la mesa) en el
-     *         que
-     *         insertar mis cartas
-     *
-     * @param repite
-     * @param num
-     * @param extremo
-     * @return
+     * 
+     * @return Retorna el extremo en el que se introducen las cartas
      */
     private boolean leerExtremo() {
         int num = 0;
@@ -207,19 +219,14 @@ public class Jugador {
         return num == 1;
     }
 
+    /**
+     * 
+     * @return Retorna el nombre del jugador
+     */
     public String getNombre(){
         return nombre;
     }
 
-    /**
-     * @author ivanr
-     *
-     *         Devuelve un String con las cartas que tiene un jugador en la mano y
-     *         en la
-     *         mesa
-     *
-     * @return
-     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(this.nombre);
@@ -255,11 +262,19 @@ public class Jugador {
     private static class ZonaJuego {
         private List<Stack<Carta>> zonaJuego;
 
+        /**
+         * Crea la zona de juego insertando una carta
+         * @param carta
+         */
         public ZonaJuego(Carta carta) {
             zonaJuego = new LinkedList<>();
             insertarCarta(carta);
         }
 
+        /**
+         * Inserta la carta en la zona de juego
+         * @param c
+         */
         public void insertarCarta(Carta c) {
             if(Jugador.entaEnConjuntoPilas(c,zonaJuego)){
                 for (Stack<Carta> s : zonaJuego) {
@@ -275,6 +290,10 @@ public class Jugador {
             }
         }
 
+        /**
+         * Devuelve el numero de cartas que hay en la zona de juego
+         * @return
+         */
         public int getNumCartas() {
             int cont = 0;
             for (Stack<Carta> s : zonaJuego) {
@@ -283,6 +302,10 @@ public class Jugador {
             return cont;
         }
 
+        /**
+         * Devuelve el numero de especies distintas en la zona de juego
+         * @return
+         */
         public int getNumEspeciesZonaJuego() {
             return zonaJuego.size();
         }
@@ -314,11 +337,19 @@ public class Jugador {
     private class Mano {
         private List<Stack<Carta>> mano;
 
+        /**
+         * Crea la mano introduciendo 8 cartas
+         * @param b
+         */
         public Mano(Baraja b) {
             mano = new LinkedList<>();
             cogerCartas(b);
         }
-
+        /**
+         * Coge 8 cartas de la baraja y las introduce en la mano
+         * @param b
+         * @return Retorna true si se pueden coger cartas y false en caso contrario
+         */
         public boolean cogerCartas(Baraja b) {
             if (b.size() < 8) {
                 return false;
@@ -341,6 +372,10 @@ public class Jugador {
             }
         }
 
+        /**
+         * Añade una lista de cartas a a mano
+         * @param c
+         */
         public void anhadirCartas(List<Carta> c) {
             while(!c.isEmpty()){
                 Carta card=c.get(0);
@@ -360,6 +395,11 @@ public class Jugador {
             }
         }
 
+        /**
+         * 
+         * @param carta
+         * @return Devuelve la pila de cartas de la especie que se pasa
+         */
         public Stack<Carta> eliminarCartas(Carta carta) {
             Stack<Carta> toRet = new Stack<>();
             for (Stack<Carta> c : mano) {
@@ -371,6 +411,10 @@ public class Jugador {
             return toRet;
         }
 
+        /**
+         * Devuelve el numero de cartas que hay en la mano
+         * @return
+         */
         public int numeroCartas() {
             int cont = 0;
             for (Stack<Carta> i : mano) {
@@ -379,10 +423,18 @@ public class Jugador {
             return cont;
         }
 
+        /**
+         * 
+         * @return Retorna true si el jugador puede bajar cartas a la zona de juego y false en caso contrario
+         */
         public boolean bandadaPequenha() {
             return posibilidadesBandadas().size() != 0;
         }
 
+        /**
+         * 
+         * @return Devuelve la lista de cartas de las cuales el jugador puede hacer bandada
+         */
         public List<Carta> posibilidadesBandadas() {
             List<Carta> a = new LinkedList<>();
             for (Stack<Carta> c : mano) {

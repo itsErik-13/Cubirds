@@ -16,6 +16,11 @@ import java.util.LinkedList;
 public class Mesa {
 
     private final int MAX_FILAS = 4;
+    private final int NUM_CARTAS_FILA = 3;
+
+    // DEBE DE SER MENOR QUE EL NUMERO DE CARTAS Y NUMERO DE ESPECIES(COMO ES OBVIO)
+    private final int ESPECIES_DISTINTAS_INICIAL = 3;
+    private final int ESPECIES_DISTINTAS_JUEGO = 2;
     private List<Carta>[] mesa;
 
     public Mesa() {
@@ -30,15 +35,16 @@ public class Mesa {
      */
     public void colocarMesaInicial(Baraja baraja) {
         for (int i = 0; i < MAX_FILAS; i++) {
-            while (mesa[i].size() < 3) {
+            while (mesa[i].size() < ESPECIES_DISTINTAS_INICIAL) {
                 Carta cartaIntroducir = baraja.sacarCarta();
-
                 if (mesa[i].contains(cartaIntroducir)) {
                     baraja.insertarCarta(cartaIntroducir);
                 } else {
                     mesa[i].add(cartaIntroducir);
                 }
-
+            }
+            while (mesa[i].size() < NUM_CARTAS_FILA) {
+                mesa[i].add(baraja.sacarCarta());
             }
         }
     }
@@ -101,17 +107,16 @@ public class Mesa {
     public boolean rellenar(Baraja baraja) {
         for (int fila = 0; fila < MAX_FILAS; fila++) {
             boolean rellenar = true;
-            for (int i = 0; i < mesa[fila].size() - 1; i++) {
-                if (!mesa[fila].get(i).equals(mesa[fila].get(i + 1)))
-                    rellenar = false;
-            }
             for (int i = 0; i < baraja.size() && rellenar; i++) {
-                Carta cartaIntroducir = baraja.sacarCarta();
-                if (cartaIntroducir.equals(mesa[fila].get(0))) {
-                    baraja.insertarCarta(cartaIntroducir);
-                } else {
-                    mesa[fila].add(cartaIntroducir);
+                if (contarEspeciesDistintasFila(mesa[fila]) >= ESPECIES_DISTINTAS_JUEGO) {
                     rellenar = false;
+                } else {
+                    Carta cartaIntroducir = baraja.sacarCarta();
+                    if (mesa[fila].contains(cartaIntroducir)) {
+                        baraja.insertarCarta(cartaIntroducir);
+                    } else {
+                        mesa[fila].add(cartaIntroducir);
+                    }
                 }
             }
             if (rellenar) {
@@ -123,11 +128,10 @@ public class Mesa {
 
     public String toString() {
         StringBuilder sb = new StringBuilder("\nMesa: \n");
-        sb.append(Jugador.ANSI_YELLOW);
         for (int i = 0; i < MAX_FILAS; i++) {
             for (Carta carta : mesa[i]) {
+                sb.append(Jugador.ANSI_YELLOW);
                 sb.append(carta);
-                //sb.append(carta.getEspecie().equals("Curruca de caña") ? "\t" : "\t\t");
                 sb.append(' ');
             }
             sb.append("\n");
@@ -136,4 +140,13 @@ public class Mesa {
         return sb.toString();
     }
 
+    private int contarEspeciesDistintasFila(List<Carta> fila) {
+        List<Carta> temp = new LinkedList<>();
+        for (Carta carta : fila) {
+            if (!temp.contains(carta)) {
+                temp.add(carta);
+            }
+        }
+        return temp.size();
+    }
 }

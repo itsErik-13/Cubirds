@@ -4,14 +4,12 @@
 
 package es.uvigo.esei.cubirds.core;
 
-import javax.swing.text.html.FormView;
 
 public class Carta {
 
     public static final int[] numCartas = new int[]{20,7,20,10,13,17,10,13};
     public static final String[] especies = {"Curruca de caña","Flamenco","Petirrojo","Tucán","Pato","Urraca","Lechuza","Guacamayo"};
-    public static final int[] bandadasP = {6,2,6,3,4,5,3,4};
-    public static final int[] bandadasG = {9,3,9,4,6,7,4,6};
+    public static final int[][] bandadas = {{6,9},{2,3},{6,9},{3,4},{4,6},{5,7},{3,4},{4,6}};
 
     
     

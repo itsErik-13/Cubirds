@@ -5,7 +5,7 @@ package es.uvigo.esei.cubirds.iu;
 
 import java.util.LinkedList;
 import java.util.List;
-
+import java.util.Stack;
 
 import es.uvigo.esei.cubirds.core.*;
 
@@ -46,8 +46,7 @@ public class Juego {
             System.out.println(actual);
             
             // El jugador coloca las cartas en la mesa y recibe las que están rodeadas
-            List<Carta> toAdd = actual.colocarMesa(baraja, mesa);
-
+            List<Carta> toAdd = ponerCartasMesa(mesa, actual);
             // Si no recoge cartas se le permite tomar 2 de la baraja.
             if (toAdd.size() == 0) {
                 reponerCartas(actual, baraja);
@@ -56,7 +55,7 @@ public class Juego {
             }
 
             // Se mira si el jugador puede bajar cartas a la zona de juego, de ser así se inserta 1 en la zona de juego y el resto en md.
-            md.addDescarte(actual.bajarCartasZonaJuego());
+            md.addDescarte(bajarCartas(actual));
 
             // Se comprueba si el jugador ya tiene las 7 especies distintas necesarias para ganar el juego
             if(actual.especiesDistintasZonaJuego() >=7){
@@ -80,7 +79,7 @@ public class Juego {
 
         // Se comprueba quién ha ganado la partida
         if (jugadores[turno].especiesDistintasZonaJuego() >= 7) {
-            System.out.println(Jugador.ANSI_GREEN +"El ganador es: " + jugadores[turno] + Jugador.ANSI_RESET);
+            System.out.println(Jugador.ANSI_GREEN +"El ganador es: " + jugadores[turno].getNombre() + Jugador.ANSI_RESET);
         } else {
             ganadoresNoCartas(jugadores);
         }
@@ -111,6 +110,11 @@ public class Juego {
                 for (int index = 0; index < 2; index++) {
                     aux.add(b.sacarCarta());
                 }
+                System.out.println("Has cogido :");
+                for (Carta carta : aux) {
+                    System.out.println(Jugador.ANSI_BLUE + carta.toStringEntero() + Jugador.ANSI_RESET);
+                }
+                System.out.println();
                 j.meterCartasMano(aux);
             }
         }
@@ -132,13 +136,13 @@ public class Juego {
 
     public static void ganadoresNoCartas(Jugador[] j) {
         List<Jugador> toRet = new LinkedList<>();
-        int maxBandadas = Integer.MIN_VALUE;
+        int maxCartas = Integer.MIN_VALUE;
         for (int i = 0; i < j.length; i++) {
-            if (maxBandadas < j[i].especiesDistintasZonaJuego()) {
+            if (maxCartas < j[i].numCartasZonaJuego()) {
                 toRet.clear();
-                maxBandadas = j[i].especiesDistintasZonaJuego();
+                maxCartas = j[i].numCartasZonaJuego();
                 toRet.add(j[i]);
-            } else if (maxBandadas == j[i].especiesDistintasZonaJuego()) {
+            } else if (maxCartas == j[i].numCartasZonaJuego()) {
                 toRet.add(j[i]);
             }
         }
@@ -147,6 +151,15 @@ public class Juego {
             System.out.println(Jugador.ANSI_PURPLE + "\t-" +jugador.getNombre());
         }
         System.out.println(Jugador.ANSI_RESET);
+    }
+
+    public static List<Carta> ponerCartasMesa(Mesa mesa, Jugador j){
+        List<Carta> toRet = j.colocarMesa(leerEspecie(j.getCartasDistintasMano()), leerFila(), leerExtremo(), mesa);
+        System.out.println("\nHas cogido:");
+        for (Carta carta : toRet) {
+            System.out.println(Jugador.ANSI_BLUE + carta.toStringEntero() + Jugador.ANSI_RESET);
+        }
+        return toRet;
     }
 
     public static int leeNumJugadores() {
@@ -159,6 +172,78 @@ public class Juego {
         } while (toRet < 2 || toRet > 5);
 
         return toRet;
+    }
 
+    /**
+     * 
+     * @return Retorna la especie que se desea insertar en la mesa
+     */
+    private static Carta leerEspecie(List<Carta> lista) {
+        int especie = 0;
+        do {
+            especie = ES.pideNumero("Introduce la especie (): " + "(1-" + lista.size() + ")");
+        } while (especie < 1 || especie > lista.size());
+        return lista.get(especie - 1);
+    }
+
+    /**
+     * 
+     * @return Retorna la fila en la que se quiere insertar la mesa
+     */
+    private static int leerFila() {
+        int fila = 0;
+        do {
+            fila = ES.pideNumero("\nIntroduce una fila(1...4)");
+        } while (fila < 1 || fila > 4);
+
+        return --fila;
+    }
+
+    /**
+     * 
+     * @return Retorna el extremo a insertar la carta, true para derecha y false para izquierda
+     */
+    private static boolean leerExtremo() {
+        int num = 0;
+        do {
+            num = ES.pideNumero("\nQuieres poner la/s carta/s por la izquierda(1) o por la derecha(2): ");
+        } while ((num < 1 || num > 2));
+
+        return num == 2;
+    }
+
+    /**
+     * 
+     * @return Devuelve cierto si el jugador quiere bajar cartas y falso en caso
+     *         contrario
+     */
+    public static boolean quiereBajarCartas() {
+        String s;
+        do {
+            s = ES.pideCadena("¿Quieres bajar cartas a la zona de juego?(S: si, N: no)");
+            if (!s.equalsIgnoreCase("s") && !s.equalsIgnoreCase("n")) {
+                System.out.println("Opción no válida.");
+            }
+        } while (!s.equalsIgnoreCase("s") && !s.equalsIgnoreCase("n"));
+
+        return s.equalsIgnoreCase("s");
+    }
+
+    public static Stack<Carta> bajarCartas(Jugador j){
+        Stack<Carta> toRet = new Stack<>();
+        if (j.getMano().bandadaPequenha()) {
+            int cont = 1;
+            List<Carta> posibilidades = j.getMano().posibilidadesBandadas();
+            System.out.println("Puede bajar las siguientes especies a la zona de juego: ");
+            for (Carta carta : posibilidades) {
+                System.out.println("   -" + cont + "." + carta);
+            }
+            if (quiereBajarCartas()) {
+                Carta aBajar = leerEspecie(posibilidades);
+                toRet = j.quitarCartasMano(aBajar);
+                j.insertarCartasZonaJuego(toRet.pop());;
+            }
+        }
+        return toRet;
     }
 }

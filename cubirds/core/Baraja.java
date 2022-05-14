@@ -23,7 +23,7 @@ public class Baraja {
         baraja = new ArrayDeque<>();
         for(int i = 0; i < Carta.numCartas.length ; i++){
             for (int j = 0; j < Carta.numCartas[i]; j++) {
-                baraja.add(new Carta(Carta.especies[i],Carta.bandadasP[i],Carta.bandadasG[i]));
+                baraja.add(new Carta(Carta.especies[i],Carta.bandadas[i][0],Carta.bandadas[i][1]));
             }
         }
         barajar();
@@ -44,6 +44,7 @@ public class Baraja {
             numCartas--;
         }
     }
+    
     /**
      * Devuelve la carta que está en la cima de la baraja
      * @return  
@@ -51,6 +52,7 @@ public class Baraja {
     public Carta sacarCarta(){
         return baraja.remove();
     }
+
     /**
      * Introduce la carta pasada como parámetro en la baraja
      * @param carta  

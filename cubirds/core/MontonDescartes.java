@@ -22,4 +22,8 @@ public class MontonDescartes {
     public void addDescarte(Stack<Carta> cartas){
         descartes.addAll(cartas);
     }
+
+    public Carta sacarCarta(){
+        return descartes.pop();
+    }
 }

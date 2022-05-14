@@ -96,6 +96,7 @@ public class Juego {
                 aux.add(b.sacarCarta());
             }
             j.meterCartasMano(aux);
+            System.out.println("Se ha repuesto tu mano con 8 cartas");
         }
         return toRet;
     }
@@ -146,6 +147,7 @@ public class Juego {
                 toRet.add(j[i]);
             }
         }
+        System.out.println("No quedan suficientes cartas para continuar el juego\n");
         System.out.println(Jugador.ANSI_PURPLE + "Ganador/es: ");
         for (Jugador jugador : toRet) {
             System.out.println(Jugador.ANSI_PURPLE + "\t-" +jugador.getNombre());
